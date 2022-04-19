@@ -7,8 +7,16 @@ import { ResetRequestTokenSchema } from '../schemas';
 export const authenticationProviders = [
   {
     provide: REQUEST_RESET_TOKEN,
-    useFactory: (connection: Connection): Model<RequestResetToken> => {
-      return connection.model(REQUEST_RESET_TOKEN, ResetRequestTokenSchema);
+    useFactory: async (
+      connection: Connection,
+    ): Promise<Model<RequestResetToken>> => {
+      const model = connection.model<RequestResetToken>(
+        REQUEST_RESET_TOKEN,
+        ResetRequestTokenSchema,
+      );
+
+      await model.createCollection();
+      return model;
     },
     inject: [DB_CONNECTION],
   },

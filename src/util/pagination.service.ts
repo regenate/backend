@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { cloneDeep, isEmpty } from 'lodash';
-import { Document, Model, MongooseFilterQuery } from 'mongoose';
+import { Document, FilterQuery, Model } from 'mongoose';
+
 @Injectable()
 export class PaginationService {
   async paginate<T extends Document>(
     model: Model<Document>,
-    criteria: MongooseFilterQuery<Model<Document>>,
+    criteria: FilterQuery<Model<Document>>,
     page = 1,
     limit = 10,
     populate: any[] | Record<string, unknown> = [],

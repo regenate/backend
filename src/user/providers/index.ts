@@ -7,8 +7,10 @@ import { UserSchema } from '../schemas';
 export const userProviders = [
   {
     provide: USER,
-    useFactory: (connection: Connection): Model<User> => {
-      return connection.model(USER, UserSchema);
+    useFactory: async (connection: Connection): Promise<Model<User>> => {
+      const model = connection.model<User>(USER, UserSchema);
+      await model.createCollection();
+      return model;
     },
     inject: [DB_CONNECTION],
   },

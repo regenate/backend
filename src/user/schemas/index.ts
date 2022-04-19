@@ -54,6 +54,6 @@ UserSchema.pre('save', async function hashPassword(next): Promise<void> {
 
 UserSchema.methods = {
   async authenticatePassword(password: string): Promise<boolean> {
-    return compare(password, this.password);
+    return compare(password, (this as any).password);
   },
 };

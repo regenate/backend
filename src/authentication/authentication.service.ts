@@ -9,7 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import configuration from '@src/config/configuration';
 import { DB_CONNECTION } from '@src/database';
 import { TemplateEngine } from '@src/email';
-import { User, UserService } from '@src/user';
+import { UserService } from '@src/user';
 import { UtilService } from '@src/util/util.service';
 import { isEmpty } from 'lodash';
 import * as moment from 'moment';
@@ -30,7 +30,7 @@ export class AuthenticationService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(username: string, password: string): Promise<User | null> {
+  async login(username: string, password: string) {
     if (isEmpty(username) || isEmpty(password)) return null;
     const userExists = await this.userService.getSingleUser({
       $or: [{ username }, { email: username }],
@@ -44,7 +44,7 @@ export class AuthenticationService {
     };
   }
 
-  async signup(email: string, password: string): Promise<User> {
+  async signup(email: string, password: string) {
     const session = await this.connection.startSession();
     session.startTransaction();
     try {
@@ -82,7 +82,7 @@ export class AuthenticationService {
     }
   }
 
-  async verifyEmail(token: string, email: string): Promise<User> {
+  async verifyEmail(token: string, email: string) {
     const user = await this.userService.getSingleUser({
       emailVerificationCode: token,
       email,
@@ -102,7 +102,7 @@ export class AuthenticationService {
     };
   }
 
-  async requestResetToken(email: string): Promise<boolean> {
+  async requestResetToken(email: string) {
     const user = await this.userService.getSingleUser({ email });
     if (!user) throw new BadRequestException('invalid email address');
     const token = this.utilService.generateRandom(8);
@@ -126,7 +126,7 @@ export class AuthenticationService {
     resetToken: string,
     newPassword: string,
     confirmNewPassword: string,
-  ): Promise<User> {
+  ) {
     if (newPassword !== confirmNewPassword)
       throw new BadRequestException('passwords do not match');
     const requestToken = await this.requestResetTokenModel.findOne({

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Inject, Injectable } from '@nestjs/common';
-import { ClientSession, Model, MongooseFilterQuery } from 'mongoose';
+import { ClientSession, FilterQuery, Model } from 'mongoose';
 import { USER } from './constants';
 import { UserDTO } from './dtos';
 import { User } from './interfaces';
@@ -9,7 +9,7 @@ import { User } from './interfaces';
 export class UserService {
   constructor(@Inject(USER) private readonly userModel: Model<User>) {}
 
-  async getSingleUser(param: MongooseFilterQuery<User>): Promise<User> {
+  async getSingleUser(param: FilterQuery<User>): Promise<User> {
     return this.userModel.findOne(param);
   }
 
@@ -21,10 +21,7 @@ export class UserService {
     return this.userModel.create([userObj], { session });
   }
 
-  async updateSingleUser(
-    param: MongooseFilterQuery<User>,
-    update: Partial<User>,
-  ): Promise<User> {
+  async updateSingleUser(param: FilterQuery<User>, update: Partial<User>) {
     return this.userModel.updateMany(param, update);
   }
 }
