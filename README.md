@@ -71,3 +71,11 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+## mongo db
+
+`docker run -p 27017:27017 -v tmp/db:/data/db mongo`
+
+## swagger
+
+`http://localhost:2001/api/`
