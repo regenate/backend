@@ -7,6 +7,7 @@ export interface User extends Document {
   emailVerificationCode?: string;
   emailVerified?: boolean;
   isDeleted?: boolean;
+  bearerToken?: string;
 
   readonly authenticatePassword: (string) => Promise<boolean>;
 }

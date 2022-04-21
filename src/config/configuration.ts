@@ -10,6 +10,7 @@ export interface Configuration {
     baseUrl: string;
   };
   useMockEmail: boolean;
+  turnLoggerOff: boolean;
   ui: {
     baseUrl: string;
   };
@@ -42,6 +43,7 @@ export default (): Configuration => ({
     baseUrl: process.env.UI_URL,
   },
   useMockEmail: process.env.USE_MOCK_EMAIL === 'true',
+  turnLoggerOff: process.env.TURN_OFF_LOGGER === 'true',
   sendGrid: {
     from: {
       name: process.env.SENDGRID_DEFAULT_FROM_NAME,

@@ -33,6 +33,8 @@ module.exports = {
       { devDependencies: ['**/*.test.ts', '**/*.spec.ts', '**/*-spec.ts'] },
     ],
     'no-useless-constructor': ['off'],
+    'arrow-body-style': ['off'],
+    'default-param-last': ['off'],
     'class-methods-use-this': ['off'],
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',

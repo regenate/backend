@@ -66,7 +66,7 @@ export class AuthenticationService {
       await this.templateEngine.sendVerifyEmail(email, {
         verifyLink: `${
           configuration().ui.baseUrl
-        }/verify-email?reset-token=${emailVerificationCode}`,
+        }/verify-email?verify-token=${emailVerificationCode}`,
       });
 
       await session.commitTransaction();

@@ -1,5 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 import { AuthenticationModule } from '@src/authentication/authentication.module';
 import configuration from '@src/config/configuration';
 import { DatabaseModule } from '@src/database/database.module';
@@ -16,15 +17,27 @@ import { UtilModule } from '@src/util/util.module';
       envFilePath: '.env.test',
       load: [configuration],
     }),
-    {
-      module: LoggerModule,
-      global: true,
-    },
+    JwtModule.registerAsync({
+      useFactory: () => ({
+        secret: configuration().jwt.secret,
+        signOptions: { expiresIn: configuration().jwt.expiresIn },
+      }),
+    }),
+    LoggerModule.forRoot(configuration().turnLoggerOff),
+    DatabaseModule,
+    AuthenticationModule,
+    UserModule,
+    UtilModule,
+    EmailModule.forRoot(configuration().useMockEmail),
+  ],
+  exports: [
+    ConfigModule,
     DatabaseModule,
     AuthenticationModule,
     UserModule,
     UtilModule,
     EmailModule,
+    JwtModule,
   ],
 })
 export class TestModule {}
