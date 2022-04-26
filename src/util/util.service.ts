@@ -70,14 +70,8 @@ export class UtilService {
   }
 
   getNumberOfWeekdaysInMonth(monthStr: string): number {
-    const monthStart = moment()
-      .month(monthStr)
-      .startOf('month')
-      .add(1, 'hour');
-    const monthEnd = moment()
-      .month(monthStr)
-      .endOf('month')
-      .add(1, 'hour');
+    const monthStart = moment().month(monthStr).startOf('month').add(1, 'hour');
+    const monthEnd = moment().month(monthStr).endOf('month').add(1, 'hour');
 
     return this.calculateWeekDays(monthStart, monthEnd);
   }
