@@ -16,5 +16,8 @@ module.exports = {
     '@logger/(.*)': '<rootDir>/src/logger/$1',
     '@authentication/(.*)': '<rootDir>/src/authentication/$1',
     '@user/(.*)': '<rootDir>/src/user/$1',
+    '@util/(.*)': '<rootDir>/src/util/$1',
+    '@email/(.*)': '<rootDir>/src/email/$1',
+    '@uploader/(.*)': '<rootDir>/src/uploader/$1',
   },
 };

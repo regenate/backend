@@ -1,4 +1,5 @@
-import { DynamicModule, Global, Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
+import configuration from '@src/config/configuration';
 import { Logger } from './interfaces';
 import { LoggerService } from './logger.service';
 
@@ -15,21 +16,17 @@ const dummyLogger: Logger = {
 };
 @Global()
 @Module({
-  providers: [LoggerService],
+  providers: [
+    {
+      provide: LoggerService,
+      useFactory: (): Logger => {
+        if (configuration().turnLoggerOff) {
+          return dummyLogger;
+        }
+        return new LoggerService();
+      },
+    },
+  ],
   exports: [LoggerService],
 })
-export class LoggerModule {
-  static forRoot(turnOff: boolean): DynamicModule {
-    return {
-      module: LoggerModule,
-      providers: turnOff
-        ? [
-            {
-              provide: LoggerService,
-              useValue: dummyLogger,
-            },
-          ]
-        : [],
-    };
-  }
-}
+export class LoggerModule {}

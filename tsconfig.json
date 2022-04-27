@@ -19,7 +19,10 @@
       "@database/*": ["database/*"],
       "@logger/*": ["logger/*"],
       "@authentication/*": ["authentication/*"],
-      "@user/*": ["user/*"]
+      "@user/*": ["user/*"],
+      "@util/*": ["util/*"],
+      "@email/*": ["email/*"],
+      "@uploader/*": ["uploader/*"]
     }
   },
   "include": ["./src/**/*", "./test/**/*"]

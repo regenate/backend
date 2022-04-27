@@ -11,6 +11,12 @@ export interface Configuration {
   };
   useMockEmail: boolean;
   turnLoggerOff: boolean;
+  useMockUploader: boolean;
+  cloudinary: {
+    name: string;
+    key: string;
+    secret: string;
+  };
   ui: {
     baseUrl: string;
   };
@@ -44,6 +50,12 @@ export default (): Configuration => ({
   },
   useMockEmail: process.env.USE_MOCK_EMAIL === 'true',
   turnLoggerOff: process.env.TURN_OFF_LOGGER === 'true',
+  useMockUploader: process.env.USE_MOCK_UPLOADER === 'true',
+  cloudinary: {
+    key: process.env.CLOUDINARY_KEY,
+    name: process.env.CLOUDINARY_NAME,
+    secret: process.env.CLOUDINARY_SECRET,
+  },
   sendGrid: {
     from: {
       name: process.env.SENDGRID_DEFAULT_FROM_NAME,
