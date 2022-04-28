@@ -18,7 +18,7 @@ import { UtilModule } from './util/util.module';
       ignoreEnvFile: configuration().isTest,
       load: [configuration],
     }),
-    LoggerModule.forRoot(configuration().turnLoggerOff),
+    LoggerModule,
     DatabaseModule,
     AuthenticationModule,
     UserModule,
