@@ -1,6 +1,24 @@
 import { compare, hash } from 'bcryptjs';
 import { Schema } from 'mongoose';
+import { USER } from '../constants';
 import { User } from '../interfaces';
+
+export const UserTypeSchema = new Schema(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: USER,
+      required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+    },
+  },
+  {
+    _id: false,
+  },
+);
 
 export const UserSchema = new Schema(
   {

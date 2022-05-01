@@ -43,7 +43,7 @@ export class PaginationService {
         query.populate(populate);
       }
       if (!isEmpty(populate) && Array.isArray(populate)) {
-        populate.forEach(p => {
+        populate.forEach((p) => {
           query.populate(p);
         });
       }

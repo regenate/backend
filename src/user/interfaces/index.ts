@@ -11,3 +11,8 @@ export interface User extends Document {
 
   readonly authenticatePassword: (string) => Promise<boolean>;
 }
+
+export interface UserType extends Document {
+  type: string;
+  user: string | User;
+}

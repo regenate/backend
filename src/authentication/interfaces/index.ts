@@ -14,7 +14,7 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
-      user: Record<string, unknown>; // or can be anythin
+      user: User; // or can be anythin
     }
   }
 }

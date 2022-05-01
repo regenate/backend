@@ -21,3 +21,13 @@ export class UserDTO {
 
   emailVerificationCode?: string;
 }
+
+export class ChooseUserTypeDTO {
+  @ApiProperty({
+    description: 'user type',
+    required: true,
+  })
+  @IsNotEmpty()
+  // @IsMongoId()
+  type: string;
+}
