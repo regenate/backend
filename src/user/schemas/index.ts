@@ -11,7 +11,8 @@ export const UserTypeSchema = new Schema(
       required: true,
     },
     type: {
-      type: String,
+      type: Number,
+      enum: [1, 2],
       required: true,
     },
   },

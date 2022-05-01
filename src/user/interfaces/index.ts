@@ -1,4 +1,5 @@
 import { Document } from 'mongoose';
+import { UserTypeEnum } from '../enums/user-type';
 
 export interface User extends Document {
   username?: string;
@@ -13,6 +14,6 @@ export interface User extends Document {
 }
 
 export interface UserType extends Document {
-  type: string;
+  type: UserTypeEnum;
   user: string | User;
 }

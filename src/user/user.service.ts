@@ -1,8 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { ClientSession, FilterQuery, Model } from 'mongoose';
 import { USER, USER_TYPE } from './constants';
 import { ChooseUserTypeDTO, UserDTO } from './dtos';
+import { UserTypeEnum } from './enums/user-type';
 import { User, UserType } from './interfaces';
 
 @Injectable()
@@ -34,7 +40,15 @@ export class UserService {
   ): Promise<UserType> {
     const userTypeObj = { type: userTypeDto.type, user: userId };
 
-    // return this.userTypeModel.create(userTypeObj);
+    if (userTypeDto.type === UserTypeEnum.none) {
+      throw new BadRequestException('user did not select a user type');
+    }
+
+    const isUserTypeExist = await this.userTypeModel.exists({ user: userId });
+
+    if (isUserTypeExist) {
+      throw new ConflictException('user already selected a type ');
+    }
 
     return this.userTypeModel.findOneAndUpdate({ user: userId }, userTypeObj, {
       new: true,

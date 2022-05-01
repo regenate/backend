@@ -38,7 +38,6 @@ export class UserController {
       this.logger.log('creating user type');
 
       const userType = await this.userService.createUsertype(user.id, input);
-      console.warn(1111);
 
       this.logger.success('done creating user type');
 

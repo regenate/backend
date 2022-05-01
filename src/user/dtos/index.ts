@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
+import { UserTypeEnum } from '../enums/user-type';
 
 export class UserDTO {
   @ApiProperty({
@@ -27,7 +34,6 @@ export class ChooseUserTypeDTO {
     description: 'user type',
     required: true,
   })
-  @IsNotEmpty()
-  // @IsMongoId()
-  type: string;
+  @IsEnum(UserTypeEnum)
+  type: UserTypeEnum;
 }
