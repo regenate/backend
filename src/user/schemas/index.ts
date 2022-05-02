@@ -23,17 +23,17 @@ export const UserSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    mentorExpertise: [
-      {
-        type: Number,
-        enum: [0, 1, 2, 3, 4, 5, 6],
-      },
-    ],
     role: {
       type: Number,
       enum: [1, 2],
       required: true,
     },
+    mentorExpertise: [
+      {
+        type: Number,
+        enum: [0, 1, 2, 3, 4, 5, 6, 7],
+      },
+    ],
     companyOrSchool: {
       type: String,
     },
@@ -43,6 +43,12 @@ export const UserSchema = new Schema(
     linkedlnUrl: {
       type: String,
     },
+    mentorTopic: [
+      {
+        type: Number,
+        enum: [0, 1, 2, 3, 4, 5, 6, 7],
+      },
+    ],
   },
   {
     timestamps: true,

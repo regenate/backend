@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ExpertiseEnum } from '@src/enums/expertise';
 import { RoleEnum } from '@src/enums/role';
+import { TopicEnum } from '@src/enums/topic';
 import {
   ArrayUnique,
   Contains,
@@ -78,4 +79,14 @@ export class UpdateMentorBackgroundDTO {
   @IsNotEmpty()
   @Contains('linkedin.com')
   linkedlnUrl: string;
+}
+
+export class UpdateMentorTopicDTO {
+  @ApiProperty({
+    description: 'mentor topic',
+    required: true,
+  })
+  @IsArray()
+  @ArrayUnique()
+  topic: TopicEnum[];
 }

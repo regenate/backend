@@ -7,6 +7,7 @@ export enum ExpertiseEnum {
   css = 4,
   javascript = 5,
   typescript = 6,
+  uiUx = 7,
 }
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -18,6 +19,7 @@ export namespace ExpertiseEnum {
     ExpertiseEnum.css,
     ExpertiseEnum.javascript,
     ExpertiseEnum.typescript,
+    ExpertiseEnum.uiUx,
   ];
 
   export const ALL_VALUES = [ExpertiseEnum.none].concat(VALID_VALUES);

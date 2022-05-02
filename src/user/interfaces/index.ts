@@ -1,5 +1,6 @@
 import { ExpertiseEnum } from '@src/enums/expertise';
 import { RoleEnum } from '@src/enums/role';
+import { TopicEnum } from '@src/enums/topic';
 import { Document } from 'mongoose';
 
 export interface User extends Document {
@@ -10,10 +11,11 @@ export interface User extends Document {
   emailVerified?: boolean;
   isDeleted?: boolean;
   bearerToken?: string;
-  mentorExpertise?: ExpertiseEnum[];
   role?: RoleEnum;
+  mentorExpertise?: ExpertiseEnum[];
   companyOrSchool?: string;
   jobTitle?: string;
   linkedlnUrl?: string;
+  mentorTopic?: TopicEnum[];
   readonly authenticatePassword: (string) => Promise<boolean>;
 }

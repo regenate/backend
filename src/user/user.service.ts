@@ -7,12 +7,14 @@ import {
 } from '@nestjs/common';
 import { ExpertiseEnum } from '@src/enums/expertise';
 import { RoleEnum } from '@src/enums/role';
+import { TopicEnum } from '@src/enums/topic';
 import { ClientSession, FilterQuery, Model } from 'mongoose';
 import { USER } from './constants';
 import {
   ChooseUserRoleDTO,
   UpdateMentorBackgroundDTO,
   UpdateMentorExpertiseDTO,
+  UpdateMentorTopicDTO,
   UserDTO,
 } from './dtos';
 import { User } from './interfaces';
@@ -71,7 +73,7 @@ export class UserService {
         (exp) => !ExpertiseEnum.isValid(exp),
       )
     ) {
-      throw new BadRequestException('user entered an invalid mentorship value');
+      throw new BadRequestException('user entered an invalid mentor expertise');
     }
 
     return this.userModel.findOneAndUpdate(
@@ -95,6 +97,24 @@ export class UserService {
         jobTitle: updateMentorBackgroundDTO.jobTitle,
         linkedlnUrl: updateMentorBackgroundDTO.linkedlnUrl,
       },
+      {
+        new: true,
+        upsert: true,
+      },
+    );
+  }
+
+  async updateMentorTopic(
+    userId: string,
+    updateMentorTopicDTO: UpdateMentorTopicDTO,
+  ): Promise<User> {
+    if (updateMentorTopicDTO.topic.some((exp) => !TopicEnum.isValid(exp))) {
+      throw new BadRequestException('user entered an invalid mentor topic');
+    }
+
+    return this.userModel.findOneAndUpdate(
+      { _id: userId },
+      { mentorTopic: updateMentorTopicDTO.topic },
       {
         new: true,
         upsert: true,
