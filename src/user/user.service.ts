@@ -5,17 +5,18 @@ import {
   Inject,
   Injectable,
 } from '@nestjs/common';
+import { ExpertiseEnum } from '@src/enums/expertise';
+import { RoleEnum } from '@src/enums/role';
 import { ClientSession, FilterQuery, Model } from 'mongoose';
-import { USER, USER_TYPE } from './constants';
-import { ChooseUserTypeDTO, UserDTO } from './dtos';
-import { UserTypeEnum } from './enums/user-type';
-import { User, UserType } from './interfaces';
+import { USER, USER_ROLE } from './constants';
+import { ChooseUserRoleDTO, UpdateMentorExpertiseDTO, UserDTO } from './dtos';
+import { User, UserRole } from './interfaces';
 
 @Injectable()
 export class UserService {
   constructor(
     @Inject(USER) private readonly userModel: Model<User>,
-    @Inject(USER_TYPE) private readonly userTypeModel: Model<UserType>,
+    @Inject(USER_ROLE) private readonly userRoleModel: Model<UserRole>,
   ) {}
 
   async getSingleUser(param: FilterQuery<User>): Promise<User> {
@@ -34,25 +35,47 @@ export class UserService {
     return this.userModel.updateMany(param, update);
   }
 
-  async createUsertype(
+  async createUserRole(
     userId: string,
-    userTypeDto: ChooseUserTypeDTO,
-  ): Promise<UserType> {
-    const userTypeObj = { type: userTypeDto.type, user: userId };
+    userRoleDto: ChooseUserRoleDTO,
+  ): Promise<UserRole> {
+    const userRoleObj = { role: userRoleDto.role, user: userId };
 
-    if (userTypeDto.type === UserTypeEnum.none) {
-      throw new BadRequestException('user did not select a user type');
+    if (userRoleDto.role === RoleEnum.none) {
+      throw new BadRequestException('user did not select a user role');
     }
 
-    const isUserTypeExist = await this.userTypeModel.exists({ user: userId });
+    const isUserRoleExist = await this.userRoleModel.exists({ user: userId });
 
-    if (isUserTypeExist) {
-      throw new ConflictException('user already selected a type ');
+    if (isUserRoleExist) {
+      throw new ConflictException('user already selected a role ');
     }
 
-    return this.userTypeModel.findOneAndUpdate({ user: userId }, userTypeObj, {
+    return this.userRoleModel.findOneAndUpdate({ user: userId }, userRoleObj, {
       new: true,
       upsert: true,
     });
+  }
+
+  async updateMentorshipExpertise(
+    userId: string,
+    createMentorExpertiseDTO: UpdateMentorExpertiseDTO,
+  ): Promise<User> {
+    if (
+      createMentorExpertiseDTO.expertise.some(
+        (exp) => !ExpertiseEnum.isValid(exp),
+      )
+    ) {
+      throw new BadRequestException('user entered an invalid mentorship value');
+    }
+
+    return this.userModel.findOneAndUpdate(
+      { _id: userId },
+      { mentorExpertise: createMentorExpertiseDTO.expertise },
+      {
+        new: true,
+        upsert: true,
+      },
+    );
   }
 }

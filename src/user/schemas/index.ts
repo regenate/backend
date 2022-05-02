@@ -3,14 +3,14 @@ import { Schema } from 'mongoose';
 import { USER } from '../constants';
 import { User } from '../interfaces';
 
-export const UserTypeSchema = new Schema(
+export const UserRoleSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
       ref: USER,
       required: true,
     },
-    type: {
+    role: {
       type: Number,
       enum: [1, 2],
       required: true,
@@ -42,6 +42,12 @@ export const UserSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    mentorExpertise: [
+      {
+        type: Number,
+        enum: [0, 1, 2, 3, 4, 5, 6],
+      },
+    ],
   },
   {
     timestamps: true,

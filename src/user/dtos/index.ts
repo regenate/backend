@@ -1,12 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { ExpertiseEnum } from '@src/enums/expertise';
+import { RoleEnum } from '@src/enums/role';
 import {
+  ArrayUnique,
+  IsArray,
   IsEmail,
   IsEnum,
   IsNotEmpty,
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { UserTypeEnum } from '../enums/user-type';
 
 export class UserDTO {
   @ApiProperty({
@@ -29,11 +32,21 @@ export class UserDTO {
   emailVerificationCode?: string;
 }
 
-export class ChooseUserTypeDTO {
+export class ChooseUserRoleDTO {
   @ApiProperty({
-    description: 'user type',
+    description: 'user role',
     required: true,
   })
-  @IsEnum(UserTypeEnum)
-  type: UserTypeEnum;
+  @IsEnum(RoleEnum)
+  role: RoleEnum;
+}
+
+export class UpdateMentorExpertiseDTO {
+  @ApiProperty({
+    description: 'mentor expertise',
+    required: true,
+  })
+  @IsArray()
+  @ArrayUnique()
+  expertise: ExpertiseEnum[];
 }

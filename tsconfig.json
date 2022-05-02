@@ -22,7 +22,8 @@
       "@user/*": ["user/*"],
       "@util/*": ["util/*"],
       "@email/*": ["email/*"],
-      "@uploader/*": ["uploader/*"]
+      "@uploader/*": ["uploader/*"],
+      "@enums/*": ["enums/*"]
     }
   },
   "include": ["./src/**/*", "./test/**/*"]

@@ -1,8 +1,8 @@
 import { DB_CONNECTION } from '@src/database';
 import { Connection, Model } from 'mongoose';
-import { USER, USER_TYPE } from '../constants';
-import { User, UserType } from '../interfaces';
-import { UserSchema, UserTypeSchema } from '../schemas';
+import { USER, USER_ROLE } from '../constants';
+import { User, UserRole } from '../interfaces';
+import { UserRoleSchema, UserSchema } from '../schemas';
 
 export const userProviders = [
   {
@@ -16,9 +16,9 @@ export const userProviders = [
   },
 
   {
-    provide: USER_TYPE,
-    useFactory: async (connection: Connection): Promise<Model<UserType>> => {
-      const model = connection.model<UserType>(USER_TYPE, UserTypeSchema);
+    provide: USER_ROLE,
+    useFactory: async (connection: Connection): Promise<Model<UserRole>> => {
+      const model = connection.model<UserRole>(USER_ROLE, UserRoleSchema);
       await model.createCollection();
       return model;
     },
