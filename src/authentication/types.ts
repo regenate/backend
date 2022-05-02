@@ -4,4 +4,6 @@ export enum RequestTokenExpireTime {
   OneDay = '1 day',
 }
 
+export type Authorize = 'mentor' | 'mentee';
+
 export const RequestTokenExpireTimes = Object.values(RequestTokenExpireTime);

@@ -1,25 +1,6 @@
 import { compare, hash } from 'bcryptjs';
 import { Schema } from 'mongoose';
-import { USER } from '../constants';
 import { User } from '../interfaces';
-
-export const UserRoleSchema = new Schema(
-  {
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: USER,
-      required: true,
-    },
-    role: {
-      type: Number,
-      enum: [1, 2],
-      required: true,
-    },
-  },
-  {
-    _id: false,
-  },
-);
 
 export const UserSchema = new Schema(
   {
@@ -48,6 +29,11 @@ export const UserSchema = new Schema(
         enum: [0, 1, 2, 3, 4, 5, 6],
       },
     ],
+    role: {
+      type: Number,
+      enum: [1, 2],
+      required: true,
+    },
   },
   {
     timestamps: true,

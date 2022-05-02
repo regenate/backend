@@ -11,11 +11,6 @@ export interface User extends Document {
   isDeleted?: boolean;
   bearerToken?: string;
   mentorExpertise?: ExpertiseEnum[];
-
+  role?: RoleEnum;
   readonly authenticatePassword: (string) => Promise<boolean>;
-}
-
-export interface UserRole extends Document {
-  role: RoleEnum;
-  user: string | User;
 }

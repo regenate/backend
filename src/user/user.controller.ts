@@ -1,8 +1,7 @@
 import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Authorize } from '@src/authentication/authorization.decorator';
 import { JwtAuthGuard } from '@src/authentication/jwt-auth.guard';
-import { Roles } from '@src/authentication/roles.decorator';
-import { RoleEnum } from '@src/enums/role';
 import { LoggerService } from '@src/logger';
 import { ResponseService } from '@src/util/response.service';
 import { Request, Response } from 'express';
@@ -62,8 +61,7 @@ export class UserController {
   @ApiBody({
     type: UpdateMentorExpertiseDTO,
   })
-  @UseGuards(JwtAuthGuard)
-  @Roles(RoleEnum.mentor)
+  @Authorize('mentor')
   @Post('mentor-expertise')
   async createMentorExpertise(
     @Res() res: Response,
