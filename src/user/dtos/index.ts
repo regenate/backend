@@ -3,10 +3,12 @@ import { ExpertiseEnum } from '@src/enums/expertise';
 import { RoleEnum } from '@src/enums/role';
 import {
   ArrayUnique,
+  Contains,
   IsArray,
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsString,
   MaxLength,
   MinLength,
 } from 'class-validator';
@@ -49,4 +51,31 @@ export class UpdateMentorExpertiseDTO {
   @IsArray()
   @ArrayUnique()
   expertise: ExpertiseEnum[];
+}
+
+export class UpdateMentorBackgroundDTO {
+  @ApiProperty({
+    description: 'mentor company or school',
+    required: true,
+  })
+  @IsString()
+  @IsNotEmpty()
+  companyOrSchool: string;
+
+  @ApiProperty({
+    description: 'mentor company or school',
+    required: true,
+  })
+  @IsString()
+  @IsNotEmpty()
+  jobTitle: string;
+
+  @ApiProperty({
+    description: 'mentor company or school',
+    required: true,
+  })
+  @IsString()
+  @IsNotEmpty()
+  @Contains('linkedin.com')
+  linkedlnUrl: string;
 }

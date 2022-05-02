@@ -12,5 +12,8 @@ export interface User extends Document {
   bearerToken?: string;
   mentorExpertise?: ExpertiseEnum[];
   role?: RoleEnum;
+  companyOrSchool?: string;
+  jobTitle?: string;
+  linkedlnUrl?: string;
   readonly authenticatePassword: (string) => Promise<boolean>;
 }

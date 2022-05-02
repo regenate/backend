@@ -9,7 +9,12 @@ import { ExpertiseEnum } from '@src/enums/expertise';
 import { RoleEnum } from '@src/enums/role';
 import { ClientSession, FilterQuery, Model } from 'mongoose';
 import { USER } from './constants';
-import { ChooseUserRoleDTO, UpdateMentorExpertiseDTO, UserDTO } from './dtos';
+import {
+  ChooseUserRoleDTO,
+  UpdateMentorBackgroundDTO,
+  UpdateMentorExpertiseDTO,
+  UserDTO,
+} from './dtos';
 import { User } from './interfaces';
 
 @Injectable()
@@ -59,10 +64,10 @@ export class UserService {
 
   async updateMentorshipExpertise(
     userId: string,
-    createMentorExpertiseDTO: UpdateMentorExpertiseDTO,
+    updateMentorExpertiseDTO: UpdateMentorExpertiseDTO,
   ): Promise<User> {
     if (
-      createMentorExpertiseDTO.expertise.some(
+      updateMentorExpertiseDTO.expertise.some(
         (exp) => !ExpertiseEnum.isValid(exp),
       )
     ) {
@@ -71,7 +76,25 @@ export class UserService {
 
     return this.userModel.findOneAndUpdate(
       { _id: userId },
-      { mentorExpertise: createMentorExpertiseDTO.expertise },
+      { mentorExpertise: updateMentorExpertiseDTO.expertise },
+      {
+        new: true,
+        upsert: true,
+      },
+    );
+  }
+
+  async updateMentorBackground(
+    userId: string,
+    updateMentorBackgroundDTO: UpdateMentorBackgroundDTO,
+  ): Promise<User> {
+    return this.userModel.findOneAndUpdate(
+      { _id: userId },
+      {
+        companyOrSchool: updateMentorBackgroundDTO.companyOrSchool,
+        jobTitle: updateMentorBackgroundDTO.jobTitle,
+        linkedlnUrl: updateMentorBackgroundDTO.linkedlnUrl,
+      },
       {
         new: true,
         upsert: true,

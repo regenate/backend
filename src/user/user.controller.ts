@@ -5,7 +5,11 @@ import { JwtAuthGuard } from '@src/authentication/jwt-auth.guard';
 import { LoggerService } from '@src/logger';
 import { ResponseService } from '@src/util/response.service';
 import { Request, Response } from 'express';
-import { ChooseUserRoleDTO, UpdateMentorExpertiseDTO } from './dtos';
+import {
+  ChooseUserRoleDTO,
+  UpdateMentorBackgroundDTO,
+  UpdateMentorExpertiseDTO,
+} from './dtos';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -52,18 +56,18 @@ export class UserController {
   }
 
   @ApiOperation({
-    summary: 'create mentor expertise',
+    summary: 'update mentor expertise',
   })
   @ApiResponse({
     status: 201,
-    description: 'mentor expertise created',
+    description: 'mentor expertise updated',
   })
   @ApiBody({
     type: UpdateMentorExpertiseDTO,
   })
   @Authorize('mentor')
   @Post('mentor-expertise')
-  async createMentorExpertise(
+  async updateMentorExpertise(
     @Res() res: Response,
     @Req() req: Request,
     @Body() input: UpdateMentorExpertiseDTO,
@@ -71,14 +75,14 @@ export class UserController {
     try {
       const { user } = req;
 
-      this.logger.log('creating mentor expertise');
+      this.logger.log('updating mentor expertise');
 
       const mentorExpertise = await this.userService.updateMentorshipExpertise(
         user.id,
         input,
       );
 
-      this.logger.success('done creating mentor expertise');
+      this.logger.success('done updating mentor expertise');
 
       this.responseService.json(
         res,
@@ -88,7 +92,50 @@ export class UserController {
       );
     } catch (error) {
       this.logger.error(
-        `error occurred while creating mentor expertise - ${error.message}`,
+        `error occurred while updating mentor expertise - ${error.message}`,
+      );
+      this.responseService.json(res, error);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'update mentor background',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'mentor background updated',
+  })
+  @ApiBody({
+    type: UpdateMentorBackgroundDTO,
+  })
+  @Authorize('mentor')
+  @Post('mentor-background')
+  async updateMentorBackground(
+    @Res() res: Response,
+    @Req() req: Request,
+    @Body() input: UpdateMentorBackgroundDTO,
+  ): Promise<void> {
+    try {
+      const { user } = req;
+
+      this.logger.log('updating mentor background');
+
+      const mentorExpertise = await this.userService.updateMentorBackground(
+        user.id,
+        input,
+      );
+
+      this.logger.success('done updating mentor background');
+
+      this.responseService.json(
+        res,
+        201,
+        'mentor background updated',
+        mentorExpertise,
+      );
+    } catch (error) {
+      this.logger.error(
+        `error occurred while creating mentor background - ${error.message}`,
       );
       this.responseService.json(res, error);
     }

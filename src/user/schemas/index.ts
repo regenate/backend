@@ -34,6 +34,15 @@ export const UserSchema = new Schema(
       enum: [1, 2],
       required: true,
     },
+    companyOrSchool: {
+      type: String,
+    },
+    jobTitle: {
+      type: String,
+    },
+    linkedlnUrl: {
+      type: String,
+    },
   },
   {
     timestamps: true,
