@@ -96,11 +96,20 @@ export class UpdateMentorTopicDTO {
 
 export class UpdateMentorProfilePictureDTO {
   @ApiProperty({
-    description: 'individual avatar',
+    description: 'mentor avatar',
     required: false,
     type: FileUploadDTO,
   })
   @IsOptional()
   @ValidateNested()
   avatar?: FileUploadDTO;
+}
+
+export class UpdateMentorBioDTO {
+  @ApiProperty({
+    description: 'mentor bio',
+    required: false,
+  })
+  @IsString()
+  bio?: string;
 }

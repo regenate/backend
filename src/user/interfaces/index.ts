@@ -18,5 +18,6 @@ export interface User extends Document {
   linkedlnUrl?: string;
   mentorTopic?: TopicEnum[];
   avatar?: string;
+  bio?: string;
   readonly authenticatePassword: (string) => Promise<boolean>;
 }

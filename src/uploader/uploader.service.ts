@@ -7,6 +7,7 @@ import { Uploader } from './uploader.interface';
 
 @Injectable()
 export class UploadService {
+  // TODO: handle removing an image
   constructor(@Inject(UPLOADER) private uploader: Uploader) {}
 
   async uploadFile(

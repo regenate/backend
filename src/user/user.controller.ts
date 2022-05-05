@@ -8,6 +8,7 @@ import { Request, Response } from 'express';
 import {
   ChooseUserRoleDTO,
   UpdateMentorBackgroundDTO,
+  UpdateMentorBioDTO,
   UpdateMentorExpertiseDTO,
   UpdateMentorProfilePictureDTO,
   UpdateMentorTopicDTO,
@@ -44,11 +45,11 @@ export class UserController {
 
       this.logger.log('creating user role');
 
-      const userRole = await this.userService.createUserRole(user.id, input);
+      const userData = await this.userService.createUserRole(user.id, input);
 
       this.logger.success('done creating user role');
 
-      this.responseService.json(res, 201, 'user role created', userRole);
+      this.responseService.json(res, 201, 'user role created', userData);
     } catch (error) {
       this.logger.error(
         `error occurred while trying to create user role - ${error.message}`,
@@ -79,19 +80,14 @@ export class UserController {
 
       this.logger.log('updating mentor expertise');
 
-      const mentorExpertise = await this.userService.updateMentorshipExpertise(
+      const mentor = await this.userService.updateMentorshipExpertise(
         user.id,
         input,
       );
 
       this.logger.success('done updating mentor expertise');
 
-      this.responseService.json(
-        res,
-        201,
-        'mentor expertise updated',
-        mentorExpertise,
-      );
+      this.responseService.json(res, 201, 'mentor expertise updated', mentor);
     } catch (error) {
       this.logger.error(
         `error occurred while updating mentor expertise - ${error.message}`,
@@ -122,19 +118,14 @@ export class UserController {
 
       this.logger.log('updating mentor background');
 
-      const mentorExpertise = await this.userService.updateMentorBackground(
+      const mentor = await this.userService.updateMentorBackground(
         user.id,
         input,
       );
 
       this.logger.success('done updating mentor background');
 
-      this.responseService.json(
-        res,
-        201,
-        'mentor background updated',
-        mentorExpertise,
-      );
+      this.responseService.json(res, 201, 'mentor background updated', mentor);
     } catch (error) {
       this.logger.error(
         `error occurred while creating mentor background - ${error.message}`,
@@ -165,19 +156,11 @@ export class UserController {
 
       this.logger.log('updating mentor topic');
 
-      const mentorExpertise = await this.userService.updateMentorTopic(
-        user.id,
-        input,
-      );
+      const mentor = await this.userService.updateMentorTopic(user.id, input);
 
       this.logger.success('done updating mentor topic');
 
-      this.responseService.json(
-        res,
-        201,
-        'mentor topic updated',
-        mentorExpertise,
-      );
+      this.responseService.json(res, 201, 'mentor topic updated', mentor);
     } catch (error) {
       this.logger.error(
         `error occurred while updating mentor topic - ${error.message}`,
@@ -208,7 +191,7 @@ export class UserController {
 
       this.logger.log('updating mentor avatar');
 
-      const mentorExpertise = await this.userService.updateMentorProfilePicture(
+      const mentor = await this.userService.updateMentorProfilePicture(
         user.id,
         input,
         this.logger,
@@ -216,15 +199,45 @@ export class UserController {
 
       this.logger.success('done updating mentor avatar');
 
-      this.responseService.json(
-        res,
-        201,
-        'mentor avatar updated',
-        mentorExpertise,
-      );
+      this.responseService.json(res, 201, 'mentor avatar updated', mentor);
     } catch (error) {
       this.logger.error(
         `error occurred while updating mentor avatar - ${error.message}`,
+      );
+      this.responseService.json(res, error);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'update mentor bio',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'mentor bio updated',
+  })
+  @ApiBody({
+    type: UpdateMentorBioDTO,
+  })
+  @Authorize('mentor')
+  @Post('mentor-bio')
+  async updateMentorBio(
+    @Res() res: Response,
+    @Req() req: Request,
+    @Body() input: UpdateMentorBioDTO,
+  ): Promise<void> {
+    try {
+      const { user } = req;
+
+      this.logger.log('updating mentor bio');
+
+      const mentor = await this.userService.updateMentorBio(user.id, input);
+
+      this.logger.success('done updating mentor bio');
+
+      this.responseService.json(res, 201, 'mentor bio updated', mentor);
+    } catch (error) {
+      this.logger.error(
+        `error occurred while updating mentor bio - ${error.message}`,
       );
       this.responseService.json(res, error);
     }

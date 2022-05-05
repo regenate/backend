@@ -52,6 +52,9 @@ export const UserSchema = new Schema(
     avatar: {
       type: String,
     },
+    bio: {
+      type: String,
+    },
   },
   {
     timestamps: true,

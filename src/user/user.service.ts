@@ -15,6 +15,7 @@ import { USER } from './constants';
 import {
   ChooseUserRoleDTO,
   UpdateMentorBackgroundDTO,
+  UpdateMentorBioDTO,
   UpdateMentorExpertiseDTO,
   UpdateMentorProfilePictureDTO,
   UpdateMentorTopicDTO,
@@ -133,6 +134,7 @@ export class UserService {
     updateMentorProfilePictureDTO: UpdateMentorProfilePictureDTO,
     logger: Logger,
   ): Promise<User> {
+    // TODO: handle removing an image
     try {
       const file = await this.uploader.uploadFile(
         updateMentorProfilePictureDTO.avatar,
@@ -151,5 +153,19 @@ export class UserService {
       logger.error(`error updating photo - ${error.message}`);
       return this.userModel.findOne({ _id: userId });
     }
+  }
+
+  async updateMentorBio(
+    userId: string,
+    updateMentorBioDTO: UpdateMentorBioDTO,
+  ): Promise<User> {
+    return this.userModel.findOneAndUpdate(
+      { _id: userId },
+      { bio: updateMentorBioDTO.bio },
+      {
+        new: true,
+        upsert: true,
+      },
+    );
   }
 }
