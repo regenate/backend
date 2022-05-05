@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { ExpertiseEnum } from '@src/enums/expertise';
 import { RoleEnum } from '@src/enums/role';
 import { TopicEnum } from '@src/enums/topic';
+import { FileUploadDTO } from '@src/uploader';
 import {
   ArrayUnique,
   Contains,
@@ -9,9 +10,11 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MaxLength,
   MinLength,
+  ValidateNested,
 } from 'class-validator';
 
 export class UserDTO {
@@ -89,4 +92,15 @@ export class UpdateMentorTopicDTO {
   @IsArray()
   @ArrayUnique()
   topic: TopicEnum[];
+}
+
+export class UpdateMentorProfilePictureDTO {
+  @ApiProperty({
+    description: 'individual avatar',
+    required: false,
+    type: FileUploadDTO,
+  })
+  @IsOptional()
+  @ValidateNested()
+  avatar?: FileUploadDTO;
 }

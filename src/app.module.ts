@@ -7,7 +7,6 @@ import configuration from './config/configuration';
 import { DatabaseModule } from './database/database.module';
 import { EmailModule } from './email/email.module';
 import { LoggerModule } from './logger/logger.module';
-import { UploaderModule } from './uploader/uploader.module';
 import { UserModule } from './user/user.module';
 import { UtilModule } from './util/util.module';
 
@@ -23,7 +22,6 @@ import { UtilModule } from './util/util.module';
     AuthenticationModule,
     UserModule,
     UtilModule,
-    UploaderModule,
     EmailModule.forRoot(configuration().useMockEmail),
   ],
   controllers: [AppController],

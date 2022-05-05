@@ -8,12 +8,15 @@ import {
 import { ExpertiseEnum } from '@src/enums/expertise';
 import { RoleEnum } from '@src/enums/role';
 import { TopicEnum } from '@src/enums/topic';
+import { Logger } from '@src/logger';
+import { UploadService } from '@src/uploader';
 import { ClientSession, FilterQuery, Model } from 'mongoose';
 import { USER } from './constants';
 import {
   ChooseUserRoleDTO,
   UpdateMentorBackgroundDTO,
   UpdateMentorExpertiseDTO,
+  UpdateMentorProfilePictureDTO,
   UpdateMentorTopicDTO,
   UserDTO,
 } from './dtos';
@@ -21,7 +24,10 @@ import { User } from './interfaces';
 
 @Injectable()
 export class UserService {
-  constructor(@Inject(USER) private readonly userModel: Model<User>) {}
+  constructor(
+    @Inject(USER) private readonly userModel: Model<User>,
+    private readonly uploader: UploadService,
+  ) {}
 
   async getSingleUser(param: FilterQuery<User>): Promise<User> {
     return this.userModel.findOne(param);
@@ -120,5 +126,30 @@ export class UserService {
         upsert: true,
       },
     );
+  }
+
+  async updateMentorProfilePicture(
+    userId: string,
+    updateMentorProfilePictureDTO: UpdateMentorProfilePictureDTO,
+    logger: Logger,
+  ): Promise<User> {
+    try {
+      const file = await this.uploader.uploadFile(
+        updateMentorProfilePictureDTO.avatar,
+        logger,
+      );
+
+      return this.userModel.findOneAndUpdate(
+        { _id: userId },
+        { avatar: file.url },
+        {
+          new: true,
+          upsert: true,
+        },
+      );
+    } catch (error) {
+      logger.error(`error updating photo - ${error.message}`);
+      return this.userModel.findOne({ _id: userId });
+    }
   }
 }

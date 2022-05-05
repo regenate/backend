@@ -9,6 +9,7 @@ import {
   ChooseUserRoleDTO,
   UpdateMentorBackgroundDTO,
   UpdateMentorExpertiseDTO,
+  UpdateMentorProfilePictureDTO,
   UpdateMentorTopicDTO,
 } from './dtos';
 import { UserService } from './user.service';
@@ -180,6 +181,50 @@ export class UserController {
     } catch (error) {
       this.logger.error(
         `error occurred while updating mentor topic - ${error.message}`,
+      );
+      this.responseService.json(res, error);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'update mentor avatar',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'mentor avatar updated',
+  })
+  @ApiBody({
+    type: UpdateMentorProfilePictureDTO,
+  })
+  @Authorize('mentor')
+  @Post('mentor-avatar')
+  async updateMentorProfilePicture(
+    @Res() res: Response,
+    @Req() req: Request,
+    @Body() input: UpdateMentorProfilePictureDTO,
+  ): Promise<void> {
+    try {
+      const { user } = req;
+
+      this.logger.log('updating mentor avatar');
+
+      const mentorExpertise = await this.userService.updateMentorProfilePicture(
+        user.id,
+        input,
+        this.logger,
+      );
+
+      this.logger.success('done updating mentor avatar');
+
+      this.responseService.json(
+        res,
+        201,
+        'mentor avatar updated',
+        mentorExpertise,
+      );
+    } catch (error) {
+      this.logger.error(
+        `error occurred while updating mentor avatar - ${error.message}`,
       );
       this.responseService.json(res, error);
     }
