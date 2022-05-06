@@ -11,7 +11,7 @@ import { TopicEnum } from '@src/enums/topic';
 import { Logger } from '@src/logger';
 import { UploadService } from '@src/uploader';
 import { ClientSession, FilterQuery, Model } from 'mongoose';
-import { USER } from './constants';
+import { MENTOR, USER } from './constants';
 import {
   ChooseUserRoleDTO,
   UpdateMentorBackgroundDTO,
@@ -21,12 +21,14 @@ import {
   UpdateMentorTopicDTO,
   UserDTO,
 } from './dtos';
-import { User } from './interfaces';
+import { Mentor, User } from './interfaces';
 
 @Injectable()
 export class UserService {
   constructor(
     @Inject(USER) private readonly userModel: Model<User>,
+
+    @Inject(MENTOR) private readonly mentorModel: Model<Mentor>,
     private readonly uploader: UploadService,
   ) {}
 
@@ -74,7 +76,7 @@ export class UserService {
   async updateMentorshipExpertise(
     userId: string,
     updateMentorExpertiseDTO: UpdateMentorExpertiseDTO,
-  ): Promise<User> {
+  ): Promise<Mentor> {
     if (
       updateMentorExpertiseDTO.expertise.some(
         (exp) => !ExpertiseEnum.isValid(exp),
@@ -83,7 +85,7 @@ export class UserService {
       throw new BadRequestException('user entered an invalid mentor expertise');
     }
 
-    return this.userModel.findOneAndUpdate(
+    return this.mentorModel.findOneAndUpdate(
       { _id: userId },
       { mentorExpertise: updateMentorExpertiseDTO.expertise },
       {
@@ -96,8 +98,8 @@ export class UserService {
   async updateMentorBackground(
     userId: string,
     updateMentorBackgroundDTO: UpdateMentorBackgroundDTO,
-  ): Promise<User> {
-    return this.userModel.findOneAndUpdate(
+  ): Promise<Mentor> {
+    return this.mentorModel.findOneAndUpdate(
       { _id: userId },
       {
         companyOrSchool: updateMentorBackgroundDTO.companyOrSchool,
@@ -114,12 +116,12 @@ export class UserService {
   async updateMentorTopic(
     userId: string,
     updateMentorTopicDTO: UpdateMentorTopicDTO,
-  ): Promise<User> {
+  ): Promise<Mentor> {
     if (updateMentorTopicDTO.topic.some((exp) => !TopicEnum.isValid(exp))) {
       throw new BadRequestException('user entered an invalid mentor topic');
     }
 
-    return this.userModel.findOneAndUpdate(
+    return this.mentorModel.findOneAndUpdate(
       { _id: userId },
       { mentorTopic: updateMentorTopicDTO.topic },
       {
@@ -133,7 +135,7 @@ export class UserService {
     userId: string,
     updateMentorProfilePictureDTO: UpdateMentorProfilePictureDTO,
     logger: Logger,
-  ): Promise<User> {
+  ): Promise<Mentor> {
     // TODO: handle removing an image
     try {
       const file = await this.uploader.uploadFile(
@@ -141,7 +143,7 @@ export class UserService {
         logger,
       );
 
-      return this.userModel.findOneAndUpdate(
+      return this.mentorModel.findOneAndUpdate(
         { _id: userId },
         { avatar: file.url },
         {
@@ -151,15 +153,15 @@ export class UserService {
       );
     } catch (error) {
       logger.error(`error updating photo - ${error.message}`);
-      return this.userModel.findOne({ _id: userId });
+      return this.mentorModel.findOne({ _id: userId });
     }
   }
 
   async updateMentorBio(
     userId: string,
     updateMentorBioDTO: UpdateMentorBioDTO,
-  ): Promise<User> {
-    return this.userModel.findOneAndUpdate(
+  ): Promise<Mentor> {
+    return this.mentorModel.findOneAndUpdate(
       { _id: userId },
       { bio: updateMentorBioDTO.bio },
       {

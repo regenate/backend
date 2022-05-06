@@ -1,5 +1,7 @@
+import { schemaOptions } from '@src/database';
 import { compare, hash } from 'bcryptjs';
 import { Schema } from 'mongoose';
+import { MENTOR } from '../constants';
 import { User } from '../interfaces';
 
 export const UserSchema = new Schema(
@@ -26,6 +28,30 @@ export const UserSchema = new Schema(
     role: {
       type: Number,
       enum: [1, 2],
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+      /* eslint-disable no-param-reassign */
+      // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+      transform: (_doc: any, ret: any): void => {
+        delete ret._id;
+        delete ret.__v;
+        delete ret.password;
+        delete ret.emailVerificationCode;
+      },
+    },
+  },
+);
+
+export const MentorSchema = new Schema(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: MENTOR,
       required: true,
     },
     mentorExpertise: [
@@ -56,20 +82,7 @@ export const UserSchema = new Schema(
       type: String,
     },
   },
-  {
-    timestamps: true,
-    toJSON: {
-      virtuals: true,
-      /* eslint-disable no-param-reassign */
-      // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-      transform: (_doc: any, ret: any): void => {
-        delete ret._id;
-        delete ret.__v;
-        delete ret.password;
-        delete ret.emailVerificationCode;
-      },
-    },
-  },
+  schemaOptions,
 );
 
 UserSchema.pre('save', async function hashPassword(next): Promise<void> {

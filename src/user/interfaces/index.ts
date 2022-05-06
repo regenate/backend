@@ -12,6 +12,12 @@ export interface User extends Document {
   isDeleted?: boolean;
   bearerToken?: string;
   role?: RoleEnum;
+
+  readonly authenticatePassword: (string) => Promise<boolean>;
+}
+
+export interface Mentor extends Document {
+  user: string | User;
   mentorExpertise?: ExpertiseEnum[];
   companyOrSchool?: string;
   jobTitle?: string;
@@ -19,5 +25,6 @@ export interface User extends Document {
   mentorTopic?: TopicEnum[];
   avatar?: string;
   bio?: string;
-  readonly authenticatePassword: (string) => Promise<boolean>;
 }
+
+//export interface Mentee extends Document {}
