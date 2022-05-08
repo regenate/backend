@@ -14,8 +14,10 @@ import { Request, Response } from 'express';
 import {
   ChooseUserRoleDTO,
   UpdateMenteeBackgroundDTO,
+  UpdateMenteeBioDTO,
   UpdateMenteeExpertiseDTO,
   UpdateMenteeOriginDTO,
+  UpdateMenteeProfilePictureDTO,
   UpdateMentorBackgroundDTO,
   UpdateMentorBioDTO,
   UpdateMentorExpertiseDTO,
@@ -423,6 +425,80 @@ export class MenteeController {
     } catch (error) {
       this.logger.error(
         `error occurred while creating mentee background - ${error.message}`,
+      );
+      this.responseService.json(res, error);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'update mentee avatar',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'mentee avatar updated',
+  })
+  @ApiBody({
+    type: UpdateMenteeProfilePictureDTO,
+  })
+  @Authorize('mentee')
+  @Post('avatar')
+  async updateMentorProfilePicture(
+    @Res() res: Response,
+    @Req() req: Request,
+    @Body() input: UpdateMenteeProfilePictureDTO,
+  ): Promise<void> {
+    try {
+      const { user } = req;
+
+      this.logger.log('updating mentee avatar');
+
+      const mentee = await this.userService.updateMenteeProfilePicture(
+        user.id,
+        input,
+        this.logger,
+      );
+
+      this.logger.success('done updating mentee avatar');
+
+      this.responseService.json(res, 201, 'mentee avatar updated', mentee);
+    } catch (error) {
+      this.logger.error(
+        `error occurred while updating mentee avatar - ${error.message}`,
+      );
+      this.responseService.json(res, error);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'update mentee bio',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'mentee bio updated',
+  })
+  @ApiBody({
+    type: UpdateMenteeBioDTO,
+  })
+  @Authorize('mentee')
+  @Post('bio')
+  async updateMentorBio(
+    @Res() res: Response,
+    @Req() req: Request,
+    @Body() input: UpdateMenteeBioDTO,
+  ): Promise<void> {
+    try {
+      const { user } = req;
+
+      this.logger.log('updating mentee bio');
+
+      const mentee = await this.userService.updateMenteeBio(user.id, input);
+
+      this.logger.success('done updating mentee bio');
+
+      this.responseService.json(res, 201, 'mentee bio updated', mentee);
+    } catch (error) {
+      this.logger.error(
+        `error occurred while updating mentee bio - ${error.message}`,
       );
       this.responseService.json(res, error);
     }

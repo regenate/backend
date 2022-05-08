@@ -120,6 +120,12 @@ export const MenteeSchema = new Schema(
     figmaPortfolioUrl: {
       type: String,
     },
+    avatar: {
+      type: String,
+    },
+    bio: {
+      type: String,
+    },
   },
   schemaOptions,
 );

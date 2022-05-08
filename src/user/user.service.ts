@@ -16,8 +16,10 @@ import { MENTEE, MENTOR, USER } from './constants';
 import {
   ChooseUserRoleDTO,
   UpdateMenteeBackgroundDTO,
+  UpdateMenteeBioDTO,
   UpdateMenteeExpertiseDTO,
   UpdateMenteeOriginDTO,
+  UpdateMenteeProfilePictureDTO,
   UpdateMentorBackgroundDTO,
   UpdateMentorBioDTO,
   UpdateMentorExpertiseDTO,
@@ -280,6 +282,46 @@ export class UserService {
         figmaPortfolioUrl: updateMenteeBackgroundDTO.figmaPortfolioUrl,
         gitHubUrl: updateMenteeBackgroundDTO.gitHubUrl,
       },
+      {
+        new: true,
+        upsert: true,
+      },
+    );
+  }
+
+  async updateMenteeProfilePicture(
+    userId: string,
+    updateMenteeProfilePictureDTO: UpdateMenteeProfilePictureDTO,
+    logger: Logger,
+  ): Promise<Mentee> {
+    // TODO: handle removing an image
+    try {
+      const file = await this.uploader.uploadFile(
+        updateMenteeProfilePictureDTO.avatar,
+        logger,
+      );
+
+      return this.menteeModel.findOneAndUpdate(
+        { _id: userId },
+        { avatar: file.url },
+        {
+          new: true,
+          upsert: true,
+        },
+      );
+    } catch (error) {
+      logger.error(`error updating photo - ${error.message}`);
+      return this.menteeModel.findOne({ _id: userId });
+    }
+  }
+
+  async updateMenteeBio(
+    userId: string,
+    updateMenteeBioDTO: UpdateMenteeBioDTO,
+  ): Promise<Mentee> {
+    return this.menteeModel.findOneAndUpdate(
+      { _id: userId },
+      { bio: updateMenteeBioDTO.bio },
       {
         new: true,
         upsert: true,

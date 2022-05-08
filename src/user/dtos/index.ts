@@ -203,3 +203,23 @@ export class UpdateMenteeBackgroundDTO {
   @Contains('linkedin.com')
   linkedlnUrl: string;
 }
+
+export class UpdateMenteeProfilePictureDTO {
+  @ApiProperty({
+    description: 'mentee avatar',
+    required: false,
+    type: FileUploadDTO,
+  })
+  @IsOptional()
+  @ValidateNested()
+  avatar?: FileUploadDTO;
+}
+
+export class UpdateMenteeBioDTO {
+  @ApiProperty({
+    description: 'mentee bio',
+    required: false,
+  })
+  @IsString()
+  bio?: string;
+}

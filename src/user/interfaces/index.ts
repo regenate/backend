@@ -40,4 +40,6 @@ export interface Mentee extends Document {
   linkedlnUrl?: string;
   gitHubUrl?: string;
   figmaPortfolioUrl?: string;
+  avatar?: string;
+  bio?: string;
 }
