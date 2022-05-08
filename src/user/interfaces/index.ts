@@ -37,4 +37,7 @@ export interface Mentee extends Document {
   language?: string;
   expertise?: ExpertiseEnum;
   experienceLevel?: ExperienceLevelEnum;
+  linkedlnUrl?: string;
+  gitHubUrl?: string;
+  figmaPortfolioUrl?: string;
 }

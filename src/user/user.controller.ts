@@ -13,6 +13,7 @@ import { ResponseService } from '@src/util/response.service';
 import { Request, Response } from 'express';
 import {
   ChooseUserRoleDTO,
+  UpdateMenteeBackgroundDTO,
   UpdateMenteeExpertiseDTO,
   UpdateMenteeOriginDTO,
   UpdateMentorBackgroundDTO,
@@ -384,6 +385,44 @@ export class MenteeController {
     } catch (error) {
       this.logger.error(
         `error occurred while updating mentee expertise - ${error.message}`,
+      );
+      this.responseService.json(res, error);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'update mentee background',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'mentee background updated',
+  })
+  @ApiBody({
+    type: UpdateMenteeBackgroundDTO,
+  })
+  @Authorize('mentee')
+  @Post('background')
+  async updateMenteeBackground(
+    @Res() res: Response,
+    @Req() req: Request,
+    @Body() input: UpdateMenteeBackgroundDTO,
+  ): Promise<void> {
+    try {
+      const { user } = req;
+
+      this.logger.log('updating mentee background');
+
+      const mentee = await this.userService.updateMenteeBackground(
+        user.id,
+        input,
+      );
+
+      this.logger.success('done updating mentee background');
+
+      this.responseService.json(res, 201, 'mentee background updated', mentee);
+    } catch (error) {
+      this.logger.error(
+        `error occurred while creating mentee background - ${error.message}`,
       );
       this.responseService.json(res, error);
     }

@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { ApiProperty } from '@nestjs/swagger';
 import { ExperienceLevelEnum } from '@src/enums/experience-level';
 import { ExpertiseEnum } from '@src/enums/expertise';
@@ -175,4 +176,30 @@ export class UpdateMenteeExpertiseDTO {
   })
   @IsEnum(ExperienceLevelEnum)
   experienceLevel: ExperienceLevelEnum;
+}
+
+export class UpdateMenteeBackgroundDTO {
+  @ApiProperty({
+    description: 'mentee portfolio',
+    required: false,
+  })
+  @IsString()
+  @Contains('www.')
+  figmaPortfolioUrl: string;
+
+  @ApiProperty({
+    description: 'mentee gitHubUrl',
+    required: false,
+  })
+  @IsString()
+  @Contains('www.')
+  gitHubUrl: string;
+
+  @ApiProperty({
+    description: 'mentee linkedlnUrl',
+    required: false,
+  })
+  @IsString()
+  @Contains('linkedin.com')
+  linkedlnUrl: string;
 }

@@ -1,7 +1,7 @@
 import { schemaOptions } from '@src/database';
 import { compare, hash } from 'bcryptjs';
 import { Schema } from 'mongoose';
-import { MENTOR } from '../constants';
+import { USER } from '../constants';
 import { User } from '../interfaces';
 
 export const UserSchema = new Schema(
@@ -51,7 +51,7 @@ export const MentorSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
-      ref: MENTOR,
+      ref: USER,
       required: true,
     },
     country: {
@@ -95,7 +95,7 @@ export const MenteeSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
-      ref: MENTOR,
+      ref: USER,
       required: true,
     },
     country: {
@@ -110,6 +110,15 @@ export const MenteeSchema = new Schema(
 
     experienceLevel: {
       type: Number,
+    },
+    linkedlnUrl: {
+      type: String,
+    },
+    gitHubUrl: {
+      type: String,
+    },
+    figmaPortfolioUrl: {
+      type: String,
     },
   },
   schemaOptions,

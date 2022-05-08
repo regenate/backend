@@ -15,6 +15,7 @@ import { ClientSession, FilterQuery, Model } from 'mongoose';
 import { MENTEE, MENTOR, USER } from './constants';
 import {
   ChooseUserRoleDTO,
+  UpdateMenteeBackgroundDTO,
   UpdateMenteeExpertiseDTO,
   UpdateMenteeOriginDTO,
   UpdateMentorBackgroundDTO,
@@ -260,6 +261,24 @@ export class UserService {
       {
         expertise: updateMenteeExpertiseDTO.expertise,
         experienceLevel: updateMenteeExpertiseDTO.experienceLevel,
+      },
+      {
+        new: true,
+        upsert: true,
+      },
+    );
+  }
+
+  async updateMenteeBackground(
+    userId: string,
+    updateMenteeBackgroundDTO: UpdateMenteeBackgroundDTO,
+  ): Promise<Mentee> {
+    return this.menteeModel.findOneAndUpdate(
+      { _id: userId },
+      {
+        linkedlnUrl: updateMenteeBackgroundDTO.linkedlnUrl,
+        figmaPortfolioUrl: updateMenteeBackgroundDTO.figmaPortfolioUrl,
+        gitHubUrl: updateMenteeBackgroundDTO.gitHubUrl,
       },
       {
         new: true,
