@@ -1,3 +1,4 @@
+import { ExperienceLevelEnum } from '@src/enums/experience-level';
 import { ExpertiseEnum } from '@src/enums/expertise';
 import { RoleEnum } from '@src/enums/role';
 import { TopicEnum } from '@src/enums/topic';
@@ -20,7 +21,8 @@ export interface Mentor extends Document {
   user: string | User;
   country?: string;
   language?: string;
-  mentorExpertise?: ExpertiseEnum[];
+  mentorExpertise?: ExpertiseEnum;
+  experienceLevel?: ExperienceLevelEnum;
   companyOrSchool?: string;
   jobTitle?: string;
   linkedlnUrl?: string;
@@ -29,4 +31,10 @@ export interface Mentor extends Document {
   bio?: string;
 }
 
-export interface Mentee extends Document {}
+export interface Mentee extends Document {
+  user: string | User;
+  country?: string;
+  language?: string;
+  expertise?: ExpertiseEnum;
+  experienceLevel?: ExperienceLevelEnum;
+}

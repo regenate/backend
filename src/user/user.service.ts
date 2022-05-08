@@ -5,15 +5,18 @@ import {
   Inject,
   Injectable,
 } from '@nestjs/common';
+import { ExperienceLevelEnum } from '@src/enums/experience-level';
 import { ExpertiseEnum } from '@src/enums/expertise';
 import { RoleEnum } from '@src/enums/role';
 import { TopicEnum } from '@src/enums/topic';
 import { Logger } from '@src/logger';
 import { UploadService } from '@src/uploader';
 import { ClientSession, FilterQuery, Model } from 'mongoose';
-import { MENTOR, USER } from './constants';
+import { MENTEE, MENTOR, USER } from './constants';
 import {
   ChooseUserRoleDTO,
+  UpdateMenteeExpertiseDTO,
+  UpdateMenteeOriginDTO,
   UpdateMentorBackgroundDTO,
   UpdateMentorBioDTO,
   UpdateMentorExpertiseDTO,
@@ -22,7 +25,7 @@ import {
   UpdateMentorTopicDTO,
   UserDTO,
 } from './dtos';
-import { Mentor, User } from './interfaces';
+import { Mentee, Mentor, User } from './interfaces';
 import { Country } from './util/country';
 
 @Injectable()
@@ -31,6 +34,8 @@ export class UserService {
     @Inject(USER) private readonly userModel: Model<User>,
 
     @Inject(MENTOR) private readonly mentorModel: Model<Mentor>,
+
+    @Inject(MENTEE) private readonly menteeModel: Model<Mentee>,
     private readonly uploader: UploadService,
   ) {}
 
@@ -75,6 +80,8 @@ export class UserService {
     });
   }
 
+  // ------------------------------------------------------------------- MENTOR -------------------------------------------------------------------
+
   async updateMentorshipOrigin(
     userId: string,
     updateMentorOriginDTO: UpdateMentorOriginDTO,
@@ -104,17 +111,24 @@ export class UserService {
     userId: string,
     updateMentorExpertiseDTO: UpdateMentorExpertiseDTO,
   ): Promise<Mentor> {
-    if (
-      updateMentorExpertiseDTO.expertise.some(
-        (exp) => !ExpertiseEnum.isValid(exp),
-      )
-    ) {
+    if (!ExpertiseEnum.isValid(updateMentorExpertiseDTO.expertise)) {
       throw new BadRequestException('user entered an invalid mentor expertise');
+    }
+
+    if (
+      !ExperienceLevelEnum.isValid(updateMentorExpertiseDTO.experienceLevel)
+    ) {
+      throw new BadRequestException(
+        'user entered an invalid mentor experience level',
+      );
     }
 
     return this.mentorModel.findOneAndUpdate(
       { _id: userId },
-      { mentorExpertise: updateMentorExpertiseDTO.expertise },
+      {
+        mentorExpertise: updateMentorExpertiseDTO.expertise,
+        experienceLevel: updateMentorExpertiseDTO.experienceLevel,
+      },
       {
         new: true,
         upsert: true,
@@ -191,6 +205,62 @@ export class UserService {
     return this.mentorModel.findOneAndUpdate(
       { _id: userId },
       { bio: updateMentorBioDTO.bio },
+      {
+        new: true,
+        upsert: true,
+      },
+    );
+  }
+
+  // ------------------------------------------------------------------- MENTEE -------------------------------------------------------------------
+
+  async updateMenteeOrigin(
+    userId: string,
+    updateMenteeOriginDTO: UpdateMenteeOriginDTO,
+  ): Promise<Mentee> {
+    if (!Country.isValidCountry(updateMenteeOriginDTO.country)) {
+      throw new BadRequestException('user entered an invalid mentee country');
+    }
+
+    if (!Country.isValidLanguage(updateMenteeOriginDTO.language)) {
+      throw new BadRequestException('user entered an invalid mentee language');
+    }
+
+    return this.menteeModel.findOneAndUpdate(
+      { _id: userId },
+      {
+        language: updateMenteeOriginDTO.language,
+        country: updateMenteeOriginDTO.country,
+      },
+      {
+        new: true,
+        upsert: true,
+      },
+    );
+  }
+
+  async updateMenteeExpertise(
+    userId: string,
+    updateMenteeExpertiseDTO: UpdateMenteeExpertiseDTO,
+  ): Promise<Mentee> {
+    if (!ExpertiseEnum.isValid(updateMenteeExpertiseDTO.expertise)) {
+      throw new BadRequestException('user entered an invalid mentee expertise');
+    }
+
+    if (
+      !ExperienceLevelEnum.isValid(updateMenteeExpertiseDTO.experienceLevel)
+    ) {
+      throw new BadRequestException(
+        'user entered an invalid mentee experience level',
+      );
+    }
+
+    return this.menteeModel.findOneAndUpdate(
+      { _id: userId },
+      {
+        expertise: updateMenteeExpertiseDTO.expertise,
+        experienceLevel: updateMenteeExpertiseDTO.experienceLevel,
+      },
       {
         new: true,
         upsert: true,

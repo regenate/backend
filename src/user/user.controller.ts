@@ -1,5 +1,11 @@
 import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Authorize } from '@src/authentication/authorization.decorator';
 import { JwtAuthGuard } from '@src/authentication/jwt-auth.guard';
 import { LoggerService } from '@src/logger';
@@ -7,6 +13,8 @@ import { ResponseService } from '@src/util/response.service';
 import { Request, Response } from 'express';
 import {
   ChooseUserRoleDTO,
+  UpdateMenteeExpertiseDTO,
+  UpdateMenteeOriginDTO,
   UpdateMentorBackgroundDTO,
   UpdateMentorBioDTO,
   UpdateMentorExpertiseDTO,
@@ -16,6 +24,8 @@ import {
 } from './dtos';
 import { UserService } from './user.service';
 
+@ApiTags('user')
+@ApiBearerAuth()
 @Controller('user')
 export class UserController {
   constructor(
@@ -58,6 +68,18 @@ export class UserController {
       this.responseService.json(res, error);
     }
   }
+}
+
+// ------------------------------------------------------------------- MENTOR -------------------------------------------------------------------
+@ApiTags('mentor')
+@ApiBearerAuth()
+@Controller('mentor')
+export class MentorController {
+  constructor(
+    private readonly userService: UserService,
+    private readonly logger: LoggerService,
+    private readonly responseService: ResponseService,
+  ) {}
 
   @ApiOperation({
     summary: 'update mentor origin',
@@ -70,7 +92,7 @@ export class UserController {
     type: UpdateMentorOriginDTO,
   })
   @Authorize('mentor')
-  @Post('mentor-origin')
+  @Post('origin')
   async updateMentorOrigin(
     @Res() res: Response,
     @Req() req: Request,
@@ -108,7 +130,7 @@ export class UserController {
     type: UpdateMentorExpertiseDTO,
   })
   @Authorize('mentor')
-  @Post('mentor-expertise')
+  @Post('expertise')
   async updateMentorExpertise(
     @Res() res: Response,
     @Req() req: Request,
@@ -146,7 +168,7 @@ export class UserController {
     type: UpdateMentorBackgroundDTO,
   })
   @Authorize('mentor')
-  @Post('mentor-background')
+  @Post('background')
   async updateMentorBackground(
     @Res() res: Response,
     @Req() req: Request,
@@ -184,7 +206,7 @@ export class UserController {
     type: UpdateMentorTopicDTO,
   })
   @Authorize('mentor')
-  @Post('mentor-topic')
+  @Post('topic')
   async updateMentorbackground(
     @Res() res: Response,
     @Req() req: Request,
@@ -219,7 +241,7 @@ export class UserController {
     type: UpdateMentorProfilePictureDTO,
   })
   @Authorize('mentor')
-  @Post('mentor-avatar')
+  @Post('avatar')
   async updateMentorProfilePicture(
     @Res() res: Response,
     @Req() req: Request,
@@ -258,7 +280,7 @@ export class UserController {
     type: UpdateMentorBioDTO,
   })
   @Authorize('mentor')
-  @Post('mentor-bio')
+  @Post('bio')
   async updateMentorBio(
     @Res() res: Response,
     @Req() req: Request,
@@ -277,6 +299,91 @@ export class UserController {
     } catch (error) {
       this.logger.error(
         `error occurred while updating mentor bio - ${error.message}`,
+      );
+      this.responseService.json(res, error);
+    }
+  }
+}
+
+// ------------------------------------------------------------------- MENTEE -------------------------------------------------------------------
+@ApiTags('mentee')
+@ApiBearerAuth()
+@Controller('mentee')
+export class MenteeController {
+  constructor(
+    private readonly userService: UserService,
+    private readonly logger: LoggerService,
+    private readonly responseService: ResponseService,
+  ) {}
+
+  @ApiOperation({
+    summary: 'update mentee origin',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'mentee origin updated',
+  })
+  @ApiBody({
+    type: UpdateMenteeOriginDTO,
+  })
+  @Authorize('mentee')
+  @Post('origin')
+  async updateMenteeOrigin(
+    @Res() res: Response,
+    @Req() req: Request,
+    @Body() input: UpdateMenteeOriginDTO,
+  ): Promise<void> {
+    try {
+      const { user } = req;
+
+      this.logger.log('updating mentee origin');
+
+      const mentee = await this.userService.updateMenteeOrigin(user.id, input);
+
+      this.logger.success('done updating mentee origin');
+
+      this.responseService.json(res, 201, 'mentee origin updated', mentee);
+    } catch (error) {
+      this.logger.error(
+        `error occurred while updating mentee origin - ${error.message}`,
+      );
+      this.responseService.json(res, error);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'update mentee expertise',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'mentee expertise updated',
+  })
+  @ApiBody({
+    type: UpdateMenteeExpertiseDTO,
+  })
+  @Authorize('mentee')
+  @Post('expertise')
+  async updateMenteeExpertise(
+    @Res() res: Response,
+    @Req() req: Request,
+    @Body() input: UpdateMenteeExpertiseDTO,
+  ): Promise<void> {
+    try {
+      const { user } = req;
+
+      this.logger.log('updating mentee expertise');
+
+      const mentee = await this.userService.updateMenteeExpertise(
+        user.id,
+        input,
+      );
+
+      this.logger.success('done updating mentee expertise');
+
+      this.responseService.json(res, 201, 'mentee expertise updated', mentee);
+    } catch (error) {
+      this.logger.error(
+        `error occurred while updating mentee expertise - ${error.message}`,
       );
       this.responseService.json(res, error);
     }

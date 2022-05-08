@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { ExperienceLevelEnum } from '@src/enums/experience-level';
 import { ExpertiseEnum } from '@src/enums/expertise';
 import { RoleEnum } from '@src/enums/role';
 import { TopicEnum } from '@src/enums/topic';
@@ -47,6 +48,8 @@ export class ChooseUserRoleDTO {
   role: RoleEnum;
 }
 
+// ------------------------------------------------------------------- MENTOR -------------------------------------------------------------------
+
 export class UpdateMentorOriginDTO {
   @ApiProperty({
     description: 'country',
@@ -70,9 +73,15 @@ export class UpdateMentorExpertiseDTO {
     description: 'mentor expertise',
     required: true,
   })
-  @IsArray()
-  @ArrayUnique()
-  expertise: ExpertiseEnum[];
+  @IsEnum(ExpertiseEnum)
+  expertise: ExpertiseEnum;
+
+  @ApiProperty({
+    description: 'mentor experience level',
+    required: true,
+  })
+  @IsEnum(ExperienceLevelEnum)
+  experienceLevel: ExperienceLevelEnum;
 }
 
 export class UpdateMentorBackgroundDTO {
@@ -130,4 +139,40 @@ export class UpdateMentorBioDTO {
   })
   @IsString()
   bio?: string;
+}
+
+// ------------------------------------------------------------------- MENTEE -------------------------------------------------------------------
+
+export class UpdateMenteeOriginDTO {
+  @ApiProperty({
+    description: 'country',
+    required: true,
+  })
+  @IsString()
+  @IsNotEmpty()
+  country?: string;
+
+  @ApiProperty({
+    description: 'language',
+    required: true,
+  })
+  @IsString()
+  @IsNotEmpty()
+  language?: string;
+}
+
+export class UpdateMenteeExpertiseDTO {
+  @ApiProperty({
+    description: 'mentee expertise',
+    required: true,
+  })
+  @IsEnum(ExpertiseEnum)
+  expertise: ExpertiseEnum;
+
+  @ApiProperty({
+    description: 'mentee experience level',
+    required: true,
+  })
+  @IsEnum(ExperienceLevelEnum)
+  experienceLevel: ExperienceLevelEnum;
 }

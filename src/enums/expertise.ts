@@ -12,7 +12,8 @@ export enum ExpertiseEnum {
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace ExpertiseEnum {
-  export const VALID_VALUES = [
+  export const ALL_VALUES = [
+    ExpertiseEnum.none,
     ExpertiseEnum.react,
     ExpertiseEnum.angular,
     ExpertiseEnum.html,
@@ -22,9 +23,7 @@ export namespace ExpertiseEnum {
     ExpertiseEnum.uiUx,
   ];
 
-  export const ALL_VALUES = [ExpertiseEnum.none].concat(VALID_VALUES);
-
   export function isValid(expertise: ExpertiseEnum): boolean {
-    return VALID_VALUES.includes(expertise);
+    return ALL_VALUES.includes(expertise);
   }
 }

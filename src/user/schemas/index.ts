@@ -60,12 +60,13 @@ export const MentorSchema = new Schema(
     language: {
       type: String,
     },
-    mentorExpertise: [
-      {
-        type: Number,
-        enum: [0, 1, 2, 3, 4, 5, 6, 7],
-      },
-    ],
+    mentorExpertise: {
+      type: Number,
+    },
+
+    experienceLevel: {
+      type: Number,
+    },
     companyOrSchool: {
       type: String,
     },
@@ -78,7 +79,6 @@ export const MentorSchema = new Schema(
     mentorTopic: [
       {
         type: Number,
-        enum: [0, 1, 2, 3, 4, 5, 6, 7],
       },
     ],
     avatar: {
@@ -86,6 +86,30 @@ export const MentorSchema = new Schema(
     },
     bio: {
       type: String,
+    },
+  },
+  schemaOptions,
+);
+
+export const MenteeSchema = new Schema(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: MENTOR,
+      required: true,
+    },
+    country: {
+      type: String,
+    },
+    language: {
+      type: String,
+    },
+    expertise: {
+      type: Number,
+    },
+
+    experienceLevel: {
+      type: Number,
     },
   },
   schemaOptions,
