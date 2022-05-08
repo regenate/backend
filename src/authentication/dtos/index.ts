@@ -14,6 +14,7 @@ export class LoginDTO {
   @ApiProperty({
     description: 'username/email',
     required: true,
+    default: 'test@gmail.com',
   })
   @IsString()
   @IsNotEmpty()
@@ -22,6 +23,7 @@ export class LoginDTO {
   @ApiProperty({
     description: 'user password',
     required: true,
+    default: '12345678',
   })
   @IsString()
   @IsNotEmpty()

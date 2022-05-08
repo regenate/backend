@@ -28,7 +28,7 @@ export const UserSchema = new Schema(
     role: {
       type: Number,
       enum: [1, 2],
-      required: true,
+      required: false,
     },
   },
   {
