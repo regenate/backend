@@ -10,7 +10,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBody, ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { LoggerService } from '@src/logger';
 import { UserDTO } from '@src/user';
 import { ResponseService } from '@src/util/response.service';
@@ -18,6 +24,7 @@ import { Request, Response } from 'express';
 import { AuthenticationService } from './authentication.service';
 import { LoginDTO, PasswordResetDTO, VerifyEmailDTO } from './dtos';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthenticationController {
   constructor(
