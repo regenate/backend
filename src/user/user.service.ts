@@ -17,11 +17,13 @@ import {
   UpdateMentorBackgroundDTO,
   UpdateMentorBioDTO,
   UpdateMentorExpertiseDTO,
+  UpdateMentorOriginDTO,
   UpdateMentorProfilePictureDTO,
   UpdateMentorTopicDTO,
   UserDTO,
 } from './dtos';
 import { Mentor, User } from './interfaces';
+import { Country } from './util/country';
 
 @Injectable()
 export class UserService {
@@ -71,6 +73,31 @@ export class UserService {
       new: true,
       upsert: true,
     });
+  }
+
+  async updateMentorshipOrigin(
+    userId: string,
+    updateMentorOriginDTO: UpdateMentorOriginDTO,
+  ): Promise<Mentor> {
+    if (!Country.isValidCountry(updateMentorOriginDTO.country)) {
+      throw new BadRequestException('user entered an invalid mentor country');
+    }
+
+    if (!Country.isValidLanguage(updateMentorOriginDTO.language)) {
+      throw new BadRequestException('user entered an invalid mentor language');
+    }
+
+    return this.mentorModel.findOneAndUpdate(
+      { _id: userId },
+      {
+        language: updateMentorOriginDTO.language,
+        country: updateMentorOriginDTO.country,
+      },
+      {
+        new: true,
+        upsert: true,
+      },
+    );
   }
 
   async updateMentorshipExpertise(

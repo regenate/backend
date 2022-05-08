@@ -18,6 +18,8 @@ export interface User extends Document {
 
 export interface Mentor extends Document {
   user: string | User;
+  country?: string;
+  language?: string;
   mentorExpertise?: ExpertiseEnum[];
   companyOrSchool?: string;
   jobTitle?: string;
@@ -27,4 +29,4 @@ export interface Mentor extends Document {
   bio?: string;
 }
 
-//export interface Mentee extends Document {}
+export interface Mentee extends Document {}

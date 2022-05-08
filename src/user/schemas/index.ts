@@ -54,6 +54,12 @@ export const MentorSchema = new Schema(
       ref: MENTOR,
       required: true,
     },
+    country: {
+      type: String,
+    },
+    language: {
+      type: String,
+    },
     mentorExpertise: [
       {
         type: Number,

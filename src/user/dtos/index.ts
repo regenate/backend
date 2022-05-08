@@ -47,6 +47,24 @@ export class ChooseUserRoleDTO {
   role: RoleEnum;
 }
 
+export class UpdateMentorOriginDTO {
+  @ApiProperty({
+    description: 'country',
+    required: true,
+  })
+  @IsString()
+  @IsNotEmpty()
+  country?: string;
+
+  @ApiProperty({
+    description: 'language',
+    required: true,
+  })
+  @IsString()
+  @IsNotEmpty()
+  language?: string;
+}
+
 export class UpdateMentorExpertiseDTO {
   @ApiProperty({
     description: 'mentor expertise',

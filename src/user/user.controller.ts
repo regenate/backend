@@ -10,6 +10,7 @@ import {
   UpdateMentorBackgroundDTO,
   UpdateMentorBioDTO,
   UpdateMentorExpertiseDTO,
+  UpdateMentorOriginDTO,
   UpdateMentorProfilePictureDTO,
   UpdateMentorTopicDTO,
 } from './dtos';
@@ -53,6 +54,44 @@ export class UserController {
     } catch (error) {
       this.logger.error(
         `error occurred while trying to create user role - ${error.message}`,
+      );
+      this.responseService.json(res, error);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'update mentor origin',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'mentor origin updated',
+  })
+  @ApiBody({
+    type: UpdateMentorOriginDTO,
+  })
+  @Authorize('mentor')
+  @Post('mentor-origin')
+  async updateMentorOrigin(
+    @Res() res: Response,
+    @Req() req: Request,
+    @Body() input: UpdateMentorOriginDTO,
+  ): Promise<void> {
+    try {
+      const { user } = req;
+
+      this.logger.log('updating mentor origin');
+
+      const mentor = await this.userService.updateMentorshipOrigin(
+        user.id,
+        input,
+      );
+
+      this.logger.success('done updating mentor origin');
+
+      this.responseService.json(res, 201, 'mentor origin updated', mentor);
+    } catch (error) {
+      this.logger.error(
+        `error occurred while updating mentor origin - ${error.message}`,
       );
       this.responseService.json(res, error);
     }
