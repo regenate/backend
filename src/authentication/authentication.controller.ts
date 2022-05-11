@@ -94,14 +94,17 @@ export class AuthenticationController {
   @ApiBody({
     type: VerifyEmailDTO,
   })
-  @Put('verify')
+  @Get('verify')
   async verifyEmail(
     @Res() res: Response,
-    @Body() { token, email }: VerifyEmailDTO,
+    @Query() query: { verifyToken: string; emailHash: string },
   ): Promise<void> {
     try {
       this.logger.log('verifying user account');
-      const user = await this.authenticationService.verifyEmail(token, email);
+      const user = await this.authenticationService.verifyEmail(
+        query.verifyToken,
+        query.emailHash,
+      );
       this.logger.success('done verifying user account');
 
       this.responseService.json(res, 200, 'account verified', user);

@@ -10,6 +10,7 @@ export interface User extends Document {
   email: string;
   emailVerificationCode?: string;
   emailVerified?: boolean;
+  emailHash?: string;
   isDeleted?: boolean;
   bearerToken?: string;
   role?: RoleEnum;

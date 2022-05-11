@@ -79,3 +79,7 @@ Nest is [MIT licensed](LICENSE).
 ## swagger
 
 `http://localhost:2001/api/`
+
+## migration
+
+`https://www.npmjs.com/package/migrate-mongo`

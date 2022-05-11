@@ -45,6 +45,7 @@ export class ChooseUserRoleDTO {
     description: 'user role',
     required: true,
   })
+  @IsNotEmpty()
   @IsEnum(RoleEnum)
   role: RoleEnum;
 }

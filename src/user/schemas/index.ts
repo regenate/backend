@@ -21,6 +21,10 @@ export const UserSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    emailHash: {
+      type: String,
+      unique: true,
+    },
     isDeleted: {
       type: Boolean,
       default: false,
@@ -139,6 +143,18 @@ UserSchema.pre('save', async function hashPassword(next): Promise<void> {
   const values = this as User;
   const passwordHash = await hash(values.password, 8);
   values.password = passwordHash;
+  next();
+});
+
+UserSchema.pre('save', async function hashEmail(next): Promise<void> {
+  if (!this.isModified('emailHash')) {
+    next();
+    return;
+  }
+
+  const values = this as User;
+  const emailHash = await hash(values.email, 8);
+  values.emailHash = emailHash;
   next();
 });
 

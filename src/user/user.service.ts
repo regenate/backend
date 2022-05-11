@@ -51,7 +51,9 @@ export class UserService {
     session: ClientSession,
   ): Promise<User[]> {
     const userObj = <User>user;
-    return this.userModel.create([userObj], { session });
+    return this.userModel.create([{ ...userObj, emailHash: userObj.email }], {
+      session,
+    });
   }
 
   async updateSingleUser(param: FilterQuery<User>, update: Partial<User>) {

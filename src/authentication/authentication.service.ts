@@ -63,10 +63,13 @@ export class AuthenticationService {
         },
         session,
       );
+
       await this.templateEngine.sendVerifyEmail(email, {
         verifyLink: `${
-          configuration().ui.baseUrl
-        }/verify-email?verify-token=${emailVerificationCode}`,
+          configuration().api.baseUrl
+        }/auth/verify?verifyToken=${emailVerificationCode}&emailHash=${
+          user.emailHash
+        }`,
       });
 
       await session.commitTransaction();
@@ -82,10 +85,13 @@ export class AuthenticationService {
     }
   }
 
-  async verifyEmail(token: string, email: string) {
+  async verifyEmail(token: string, emailHash: string) {
+    if (!token || !emailHash) {
+      throw new BadRequestException('token or email hash cannot be null');
+    }
     const user = await this.userService.getSingleUser({
       emailVerificationCode: token,
-      email,
+      emailHash,
     });
 
     if (!user) throw new BadRequestException('invalid token');
