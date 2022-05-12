@@ -6,6 +6,7 @@ import { RoleEnum } from '@src/enums/role';
 import { TopicEnum } from '@src/enums/topic';
 import { FileUploadDTO } from '@src/uploader';
 import {
+  ArrayNotEmpty,
   ArrayUnique,
   Contains,
   IsArray,
@@ -56,6 +57,7 @@ export class UpdateMentorOriginDTO {
   @ApiProperty({
     description: 'country',
     required: true,
+    default: 'nigeria',
   })
   @IsString()
   @IsNotEmpty()
@@ -64,6 +66,7 @@ export class UpdateMentorOriginDTO {
   @ApiProperty({
     description: 'language',
     required: true,
+    default: 'english',
   })
   @IsString()
   @IsNotEmpty()
@@ -74,14 +77,18 @@ export class UpdateMentorExpertiseDTO {
   @ApiProperty({
     description: 'mentor expertise',
     required: true,
+    default: 1,
   })
+  @IsNotEmpty()
   @IsEnum(ExpertiseEnum)
   expertise: ExpertiseEnum;
 
   @ApiProperty({
     description: 'mentor experience level',
     required: true,
+    default: 3,
   })
+  @IsNotEmpty()
   @IsEnum(ExperienceLevelEnum)
   experienceLevel: ExperienceLevelEnum;
 }
@@ -90,6 +97,7 @@ export class UpdateMentorBackgroundDTO {
   @ApiProperty({
     description: 'mentor company or school',
     required: true,
+    default: 'tuhh',
   })
   @IsString()
   @IsNotEmpty()
@@ -98,6 +106,7 @@ export class UpdateMentorBackgroundDTO {
   @ApiProperty({
     description: 'mentor company or school',
     required: true,
+    default: 'software consultant',
   })
   @IsString()
   @IsNotEmpty()
@@ -106,6 +115,7 @@ export class UpdateMentorBackgroundDTO {
   @ApiProperty({
     description: 'mentor company or school',
     required: true,
+    default: 'www.linkedin.com',
   })
   @IsString()
   @IsNotEmpty()
@@ -117,9 +127,11 @@ export class UpdateMentorTopicDTO {
   @ApiProperty({
     description: 'mentor topic',
     required: true,
+    default: [1, 2],
   })
   @IsArray()
   @ArrayUnique()
+  @ArrayNotEmpty()
   topic: TopicEnum[];
 }
 
@@ -138,6 +150,8 @@ export class UpdateMentorBioDTO {
   @ApiProperty({
     description: 'mentor bio',
     required: false,
+    default:
+      'my name is john and i am a software developer with experience in a cross functional team',
   })
   @IsString()
   bio?: string;
@@ -149,6 +163,7 @@ export class UpdateMenteeOriginDTO {
   @ApiProperty({
     description: 'country',
     required: true,
+    default: 'nigeria',
   })
   @IsString()
   @IsNotEmpty()
@@ -157,6 +172,7 @@ export class UpdateMenteeOriginDTO {
   @ApiProperty({
     description: 'language',
     required: true,
+    default: 'english',
   })
   @IsString()
   @IsNotEmpty()
@@ -167,14 +183,18 @@ export class UpdateMenteeExpertiseDTO {
   @ApiProperty({
     description: 'mentee expertise',
     required: true,
+    default: 3,
   })
+  @IsNotEmpty()
   @IsEnum(ExpertiseEnum)
   expertise: ExpertiseEnum;
 
   @ApiProperty({
     description: 'mentee experience level',
     required: true,
+    default: 2,
   })
+  @IsNotEmpty()
   @IsEnum(ExperienceLevelEnum)
   experienceLevel: ExperienceLevelEnum;
 }
@@ -183,6 +203,7 @@ export class UpdateMenteeBackgroundDTO {
   @ApiProperty({
     description: 'mentee portfolio',
     required: false,
+    default: 'www.myportfolio.com',
   })
   @IsString()
   @Contains('www.')
@@ -191,6 +212,7 @@ export class UpdateMenteeBackgroundDTO {
   @ApiProperty({
     description: 'mentee gitHubUrl',
     required: false,
+    default: 'www.github.com',
   })
   @IsString()
   @Contains('www.')
@@ -199,6 +221,7 @@ export class UpdateMenteeBackgroundDTO {
   @ApiProperty({
     description: 'mentee linkedlnUrl',
     required: false,
+    default: 'www.linkedin.com',
   })
   @IsString()
   @Contains('linkedin.com')
@@ -220,6 +243,7 @@ export class UpdateMenteeBioDTO {
   @ApiProperty({
     description: 'mentee bio',
     required: false,
+    default: 'I am a serious student who is willing to to learn',
   })
   @IsString()
   bio?: string;

@@ -17,6 +17,7 @@ export class FileUploadDTO {
   @ApiProperty({
     description: 'file name',
     required: false,
+    default: 'john_avatar',
   })
   @IsString()
   @IsNotEmpty()
@@ -33,6 +34,7 @@ export class FileUploadDTO {
   @ApiProperty({
     description: 'file MIME type',
     required: true,
+    default: 'jpeg',
   })
   @IsString()
   @IsNotEmpty()
