@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '@src/user';
-import { IsEmail, IsNotEmpty, IsString, Matches } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class RequestResetTokenDTO {
   token: string;
@@ -37,8 +37,18 @@ export class VerifyEmailDTO {
   })
   @IsString()
   @IsNotEmpty()
-  token: string;
+  verifyToken: string;
 
+  @ApiProperty({
+    description: 'user email hash',
+    required: true,
+  })
+  @IsEmail()
+  @IsNotEmpty()
+  emailHash: string;
+}
+
+export class ForgotPasswordDTO {
   @ApiProperty({
     description: 'user email',
     required: true,
@@ -47,7 +57,6 @@ export class VerifyEmailDTO {
   @IsNotEmpty()
   email: string;
 }
-
 export class PasswordResetDTO {
   @ApiProperty({
     description: 'reset token sent to email',
@@ -61,13 +70,7 @@ export class PasswordResetDTO {
     description: 'new password',
     required: true,
   })
-  @Matches(
-    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?.&])[A-Za-z\d@$!%*.#?&]{8,20}$/gi,
-    {
-      message:
-        'password must be 8-20 characters long, and must contain at least one letter, one number and one special character',
-    },
-  )
+  @IsString()
   @IsNotEmpty()
   newPassword: string;
 
@@ -75,13 +78,7 @@ export class PasswordResetDTO {
     description: 'confirm new password',
     required: true,
   })
-  @Matches(
-    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?.&])[A-Za-z\d@$!%*.#?&]{8,20}$/gi,
-    {
-      message:
-        'password must be 8-20 characters long, and must contain at least one letter, one number and one special character',
-    },
-  )
+  @IsString()
   @IsNotEmpty()
   confirmNewPassword: string;
 }

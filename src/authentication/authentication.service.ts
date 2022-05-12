@@ -66,7 +66,7 @@ export class AuthenticationService {
 
       await this.templateEngine.sendVerifyEmail(email, {
         verifyLink: `${
-          configuration().api.baseUrl
+          configuration().ui.baseUrl
         }/auth/verify?verifyToken=${emailVerificationCode}&emailHash=${
           user.emailHash
         }`,
@@ -121,7 +121,7 @@ export class AuthenticationService {
       this.templateEngine.sendResetPassword(user.email, {
         resetLink: `${
           configuration().ui.baseUrl
-        }/reset-password?reset-token=${token}`,
+        }/reset-password?resetToken=${token}&emailHash=${user.emailHash}`,
       }),
     ]);
 

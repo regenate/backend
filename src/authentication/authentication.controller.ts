@@ -4,25 +4,23 @@ import {
   Get,
   Post,
   Put,
-  Query,
   Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import {
-  ApiBody,
-  ApiOperation,
-  ApiQuery,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoggerService } from '@src/logger';
 import { UserDTO } from '@src/user';
 import { ResponseService } from '@src/util/response.service';
 import { Request, Response } from 'express';
 import { AuthenticationService } from './authentication.service';
-import { LoginDTO, PasswordResetDTO, VerifyEmailDTO } from './dtos';
+import {
+  ForgotPasswordDTO,
+  LoginDTO,
+  PasswordResetDTO,
+  VerifyEmailDTO,
+} from './dtos';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -97,13 +95,13 @@ export class AuthenticationController {
   @Get('verify')
   async verifyEmail(
     @Res() res: Response,
-    @Query() query: { verifyToken: string; emailHash: string },
+    @Body() _body: VerifyEmailDTO,
   ): Promise<void> {
     try {
       this.logger.log('verifying user account');
       const user = await this.authenticationService.verifyEmail(
-        query.verifyToken,
-        query.emailHash,
+        _body.verifyToken,
+        _body.emailHash,
       );
       this.logger.success('done verifying user account');
 
@@ -121,17 +119,17 @@ export class AuthenticationController {
     status: 200,
     description: 'reset token sent',
   })
-  @ApiQuery({
-    name: 'email',
+  @ApiBody({
+    type: ForgotPasswordDTO,
   })
-  @Get('forgot-password')
+  @Post('forgot-password')
   async forgotPassword(
     @Res() res: Response,
-    @Query() { email }: { email: string },
+    @Body() _body: ForgotPasswordDTO,
   ): Promise<void> {
     try {
       this.logger.log('requesting reset token');
-      await this.authenticationService.requestResetToken(email);
+      await this.authenticationService.requestResetToken(_body.email);
       this.logger.success('done requesting reset token');
 
       this.responseService.json(res, 200, 'reset token sent to email');
