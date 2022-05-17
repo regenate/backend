@@ -9,6 +9,7 @@ import {
 import { Authorize } from '@src/authentication/authorization.decorator';
 import { JwtAuthGuard } from '@src/authentication/jwt-auth.guard';
 import { LoggerService } from '@src/logger';
+import { FileUploadDTO } from '@src/uploader';
 import { ResponseService } from '@src/util/response.service';
 import { Request, Response } from 'express';
 import {
@@ -17,12 +18,10 @@ import {
   UpdateMenteeBioDTO,
   UpdateMenteeExpertiseDTO,
   UpdateMenteeOriginDTO,
-  UpdateMenteeProfilePictureDTO,
   UpdateMentorBackgroundDTO,
   UpdateMentorBioDTO,
   UpdateMentorExpertiseDTO,
   UpdateMentorOriginDTO,
-  UpdateMentorProfilePictureDTO,
   UpdateMentorTopicDTO,
 } from './dtos';
 import { UserService } from './user.service';
@@ -241,14 +240,14 @@ export class MentorController {
     description: 'mentor avatar updated',
   })
   @ApiBody({
-    type: UpdateMentorProfilePictureDTO,
+    type: FileUploadDTO,
   })
   @Authorize('mentor')
   @Post('avatar')
   async updateMentorProfilePicture(
     @Res() res: Response,
     @Req() req: Request,
-    @Body() input: UpdateMentorProfilePictureDTO,
+    @Body() input: FileUploadDTO,
   ): Promise<void> {
     try {
       const { user } = req;
@@ -438,14 +437,14 @@ export class MenteeController {
     description: 'mentee avatar updated',
   })
   @ApiBody({
-    type: UpdateMenteeProfilePictureDTO,
+    type: FileUploadDTO,
   })
   @Authorize('mentee')
   @Post('avatar')
   async updateMentorProfilePicture(
     @Res() res: Response,
     @Req() req: Request,
-    @Body() input: UpdateMenteeProfilePictureDTO,
+    @Body() input: FileUploadDTO,
   ): Promise<void> {
     try {
       const { user } = req;

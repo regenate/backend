@@ -4,7 +4,6 @@ import { ExperienceLevelEnum } from '@src/enums/experience-level';
 import { ExpertiseEnum } from '@src/enums/expertise';
 import { RoleEnum } from '@src/enums/role';
 import { TopicEnum } from '@src/enums/topic';
-import { FileUploadDTO } from '@src/uploader';
 import {
   ArrayNotEmpty,
   ArrayUnique,
@@ -13,11 +12,9 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
-  IsOptional,
   IsString,
   MaxLength,
   MinLength,
-  ValidateNested,
 } from 'class-validator';
 
 export class UserDTO {
@@ -135,17 +132,6 @@ export class UpdateMentorTopicDTO {
   topic: TopicEnum[];
 }
 
-export class UpdateMentorProfilePictureDTO {
-  @ApiProperty({
-    description: 'mentor avatar',
-    required: false,
-    type: FileUploadDTO,
-  })
-  @IsOptional()
-  @ValidateNested()
-  avatar?: FileUploadDTO;
-}
-
 export class UpdateMentorBioDTO {
   @ApiProperty({
     description: 'mentor bio',
@@ -226,17 +212,6 @@ export class UpdateMenteeBackgroundDTO {
   @IsString()
   @Contains('linkedin.com')
   linkedlnUrl: string;
-}
-
-export class UpdateMenteeProfilePictureDTO {
-  @ApiProperty({
-    description: 'mentee avatar',
-    required: false,
-    type: FileUploadDTO,
-  })
-  @IsOptional()
-  @ValidateNested()
-  avatar?: FileUploadDTO;
 }
 
 export class UpdateMenteeBioDTO {

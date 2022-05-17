@@ -8,7 +8,7 @@ export interface UploadedResource {
 
 export interface FileUpload {
   filename: string;
-  size: number;
+  size?: number;
   mime: string;
   data: string;
 }

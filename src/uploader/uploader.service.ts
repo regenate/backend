@@ -28,7 +28,6 @@ export class UploadService {
       url,
       filename,
       mime: input.mime,
-      size: input.size,
     };
   }
 }

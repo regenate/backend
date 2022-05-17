@@ -10,7 +10,7 @@ import { ExpertiseEnum } from '@src/enums/expertise';
 import { RoleEnum } from '@src/enums/role';
 import { TopicEnum } from '@src/enums/topic';
 import { Logger } from '@src/logger';
-import { UploadService } from '@src/uploader';
+import { FileUploadDTO, UploadService } from '@src/uploader';
 import { ClientSession, FilterQuery, Model } from 'mongoose';
 import { MENTEE, MENTOR, USER } from './constants';
 import {
@@ -19,12 +19,10 @@ import {
   UpdateMenteeBioDTO,
   UpdateMenteeExpertiseDTO,
   UpdateMenteeOriginDTO,
-  UpdateMenteeProfilePictureDTO,
   UpdateMentorBackgroundDTO,
   UpdateMentorBioDTO,
   UpdateMentorExpertiseDTO,
   UpdateMentorOriginDTO,
-  UpdateMentorProfilePictureDTO,
   UpdateMentorTopicDTO,
   UserDTO,
 } from './dtos';
@@ -179,15 +177,12 @@ export class UserService {
 
   async updateMentorProfilePicture(
     userId: string,
-    updateMentorProfilePictureDTO: UpdateMentorProfilePictureDTO,
+    fileUploadDTO: FileUploadDTO,
     logger: Logger,
   ): Promise<Mentor> {
     // TODO: handle removing an image
     try {
-      const file = await this.uploader.uploadFile(
-        updateMentorProfilePictureDTO.avatar,
-        logger,
-      );
+      const file = await this.uploader.uploadFile(fileUploadDTO, logger);
 
       return this.mentorModel.findOneAndUpdate(
         { _id: userId },
@@ -199,7 +194,7 @@ export class UserService {
       );
     } catch (error) {
       logger.error(`error updating photo - ${error.message}`);
-      return this.mentorModel.findOne({ _id: userId });
+      throw new BadRequestException(error.message);
     }
   }
 
@@ -293,15 +288,12 @@ export class UserService {
 
   async updateMenteeProfilePicture(
     userId: string,
-    updateMenteeProfilePictureDTO: UpdateMenteeProfilePictureDTO,
+    fileUploadDTO: FileUploadDTO,
     logger: Logger,
   ): Promise<Mentee> {
     // TODO: handle removing an image
     try {
-      const file = await this.uploader.uploadFile(
-        updateMenteeProfilePictureDTO.avatar,
-        logger,
-      );
+      const file = await this.uploader.uploadFile(fileUploadDTO, logger);
 
       return this.menteeModel.findOneAndUpdate(
         { _id: userId },
@@ -313,7 +305,7 @@ export class UserService {
       );
     } catch (error) {
       logger.error(`error updating photo - ${error.message}`);
-      return this.menteeModel.findOne({ _id: userId });
+      throw new BadRequestException(error.message);
     }
   }
 
