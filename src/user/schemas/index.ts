@@ -46,6 +46,7 @@ export const UserSchema = new Schema(
         delete ret.__v;
         delete ret.password;
         delete ret.emailVerificationCode;
+        delete ret.emailHash;
       },
     },
   },
