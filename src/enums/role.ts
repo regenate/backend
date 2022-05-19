@@ -9,7 +9,7 @@ export enum RoleEnum {
 export namespace RoleEnum {
   export const ALL_VALUES = [RoleEnum.none, RoleEnum.mentor, RoleEnum.mentee];
   export const VALID_VALUES = [RoleEnum.mentor, RoleEnum.mentee];
-  export function isValidate(role: RoleEnum): boolean {
-    return VALID_VALUES.every((ro) => ro === role);
+  export function isValid(role: RoleEnum): boolean {
+    return VALID_VALUES.includes(role);
   }
 }
