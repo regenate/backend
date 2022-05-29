@@ -7,7 +7,6 @@ import { TopicEnum } from '@src/enums/topic';
 import {
   ArrayNotEmpty,
   ArrayUnique,
-  Contains,
   IsArray,
   IsEmail,
   IsEnum,
@@ -97,7 +96,6 @@ export class UpdateMentorBackgroundDTO {
     default: 'tuhh',
   })
   @IsString()
-  @IsNotEmpty()
   companyOrSchool: string;
 
   @ApiProperty({
@@ -106,7 +104,6 @@ export class UpdateMentorBackgroundDTO {
     default: 'software consultant',
   })
   @IsString()
-  @IsNotEmpty()
   jobTitle: string;
 
   @ApiProperty({
@@ -115,8 +112,6 @@ export class UpdateMentorBackgroundDTO {
     default: 'www.linkedin.com',
   })
   @IsString()
-  @IsNotEmpty()
-  @Contains('linkedin.com')
   linkedlnUrl: string;
 }
 
@@ -192,7 +187,6 @@ export class UpdateMenteeBackgroundDTO {
     default: 'www.myportfolio.com',
   })
   @IsString()
-  @Contains('www.')
   figmaPortfolioUrl: string;
 
   @ApiProperty({
@@ -201,7 +195,6 @@ export class UpdateMenteeBackgroundDTO {
     default: 'www.github.com',
   })
   @IsString()
-  @Contains('www.')
   gitHubUrl: string;
 
   @ApiProperty({
@@ -210,7 +203,6 @@ export class UpdateMenteeBackgroundDTO {
     default: 'www.linkedin.com',
   })
   @IsString()
-  @Contains('linkedin.com')
   linkedlnUrl: string;
 }
 
