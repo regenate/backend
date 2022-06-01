@@ -322,7 +322,7 @@ export class MentorController {
     description: 'home',
   })
   @Authorize('mentor')
-  @Get()
+  @Get('home')
   async getHome(@Res() res: Response, @Req() req: Request): Promise<void> {
     try {
       const { user } = req;
@@ -545,7 +545,7 @@ export class MenteeController {
     description: 'home',
   })
   @Authorize('mentee')
-  @Get()
+  @Get('home')
   async getHome(@Res() res: Response, @Req() req: Request): Promise<void> {
     try {
       const { user } = req;
