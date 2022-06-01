@@ -1,4 +1,12 @@
-import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -305,6 +313,32 @@ export class MentorController {
       this.responseService.json(res, error);
     }
   }
+
+  @ApiOperation({
+    summary: 'get mentor home information',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'home',
+  })
+  @Authorize('mentor')
+  @Get()
+  async getHome(@Res() res: Response, @Req() req: Request): Promise<void> {
+    try {
+      const { user } = req;
+      this.logger.log('retrieving mentor info');
+      const mentor = await this.userService.getMentor(user.id);
+      this.logger.success('done retrieving mentor info');
+
+      const home = {
+        mentor,
+      };
+      this.responseService.json(res, 200, 'home', home);
+    } catch (error) {
+      this.logger.error(`error occurred while getting home - ${error.message}`);
+      this.responseService.json(res, error);
+    }
+  }
 }
 
 // ------------------------------------------------------------------- MENTEE -------------------------------------------------------------------
@@ -499,6 +533,33 @@ export class MenteeController {
       this.logger.error(
         `error occurred while updating mentee bio - ${error.message}`,
       );
+      this.responseService.json(res, error);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'get mentee home information',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'home',
+  })
+  @Authorize('mentee')
+  @Get()
+  async getHome(@Res() res: Response, @Req() req: Request): Promise<void> {
+    try {
+      const { user } = req;
+      this.logger.log('retrieving mentee info');
+      const mentee = await this.userService.getMentee(user.id);
+      this.logger.success('done retrieving mentee info');
+
+      const home = {
+        mentee,
+      };
+
+      this.responseService.json(res, 200, 'home', home);
+    } catch (error) {
+      this.logger.error(`error occurred while getting home - ${error.message}`);
       this.responseService.json(res, error);
     }
   }

@@ -212,6 +212,10 @@ export class UserService {
     );
   }
 
+  async getMentor(userID: string): Promise<Mentor> {
+    return this.mentorModel.findOne({ user: userID });
+  }
+
   // ------------------------------------------------------------------- MENTEE -------------------------------------------------------------------
 
   async updateMenteeOrigin(
@@ -321,5 +325,9 @@ export class UserService {
         upsert: true,
       },
     );
+  }
+
+  async getMentee(userID: string): Promise<Mentee> {
+    return this.menteeModel.findOne({ user: userID });
   }
 }
