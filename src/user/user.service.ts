@@ -213,7 +213,7 @@ export class UserService {
   }
 
   async getMentor(userID: string): Promise<Mentor> {
-    return this.mentorModel.findOne({ user: userID });
+    return this.mentorModel.findOne({ _id: userID });
   }
 
   // ------------------------------------------------------------------- MENTEE -------------------------------------------------------------------
@@ -328,6 +328,6 @@ export class UserService {
   }
 
   async getMentee(userID: string): Promise<Mentee> {
-    return this.menteeModel.findOne({ user: userID });
+    return this.menteeModel.findOne({ _id: userID });
   }
 }
