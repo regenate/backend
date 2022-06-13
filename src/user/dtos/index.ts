@@ -92,6 +92,7 @@ export class UpdateMentorExpertiseDTO {
 export class UpdateMentorBackgroundDTO {
   @ApiProperty({
     description: 'mentor company or school',
+    required: false,
     default: 'tuhh',
   })
   @IsString()
@@ -99,6 +100,7 @@ export class UpdateMentorBackgroundDTO {
 
   @ApiProperty({
     description: 'mentor company or school',
+    required: false,
     default: 'software consultant',
   })
   @IsString()
@@ -106,6 +108,7 @@ export class UpdateMentorBackgroundDTO {
 
   @ApiProperty({
     description: 'mentor company or school',
+    required: false,
     default: 'www.linkedin.com',
   })
   @IsString()
