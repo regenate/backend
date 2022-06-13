@@ -92,7 +92,6 @@ export class UpdateMentorExpertiseDTO {
 export class UpdateMentorBackgroundDTO {
   @ApiProperty({
     description: 'mentor company or school',
-    required: true,
     default: 'tuhh',
   })
   @IsString()
@@ -100,7 +99,6 @@ export class UpdateMentorBackgroundDTO {
 
   @ApiProperty({
     description: 'mentor company or school',
-    required: true,
     default: 'software consultant',
   })
   @IsString()
@@ -108,17 +106,31 @@ export class UpdateMentorBackgroundDTO {
 
   @ApiProperty({
     description: 'mentor company or school',
-    required: true,
     default: 'www.linkedin.com',
   })
   @IsString()
   linkedlnUrl: string;
+
+  @ApiProperty({
+    description: 'mentor portfolio',
+    required: false,
+    default: 'www.myportfolio.com',
+  })
+  @IsString()
+  figmaPortfolioUrl: string;
+
+  @ApiProperty({
+    description: 'mentor gitHubUrl',
+    required: false,
+    default: 'www.github.com',
+  })
+  @IsString()
+  gitHubUrl: string;
 }
 
 export class UpdateMentorTopicDTO {
   @ApiProperty({
     description: 'mentor topic',
-    required: true,
     default: [1, 2],
   })
   @IsArray()

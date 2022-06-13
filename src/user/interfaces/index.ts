@@ -27,6 +27,8 @@ export interface Mentor extends Document {
   companyOrSchool?: string;
   jobTitle?: string;
   linkedlnUrl?: string;
+  gitHubUrl?: string;
+  figmaPortfolioUrl?: string;
   mentorTopic?: TopicEnum[];
   avatar?: string;
   bio?: string;

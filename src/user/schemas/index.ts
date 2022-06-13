@@ -81,6 +81,12 @@ export const MentorSchema = new Schema(
     linkedlnUrl: {
       type: String,
     },
+    gitHubUrl: {
+      type: String,
+    },
+    figmaPortfolioUrl: {
+      type: String,
+    },
     mentorTopic: [
       {
         type: Number,

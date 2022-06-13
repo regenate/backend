@@ -149,6 +149,8 @@ export class UserService {
         companyOrSchool: updateMentorBackgroundDTO.companyOrSchool,
         jobTitle: updateMentorBackgroundDTO.jobTitle,
         linkedlnUrl: updateMentorBackgroundDTO.linkedlnUrl,
+        gitHubUrl: updateMentorBackgroundDTO.gitHubUrl,
+        figmaPortfolioUrl: updateMentorBackgroundDTO.figmaPortfolioUrl,
       },
       {
         new: true,
