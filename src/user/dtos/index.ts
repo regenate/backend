@@ -51,6 +51,15 @@ export class ChooseUserRoleDTO {
 
 export class UpdateMentorOriginDTO {
   @ApiProperty({
+    description: 'name',
+    required: true,
+    default: 'john',
+  })
+  @IsString()
+  @IsNotEmpty()
+  name?: string;
+
+  @ApiProperty({
     description: 'country',
     required: true,
     default: 'nigeria',
@@ -156,6 +165,15 @@ export class UpdateMentorBioDTO {
 // ------------------------------------------------------------------- MENTEE -------------------------------------------------------------------
 
 export class UpdateMenteeOriginDTO {
+  @ApiProperty({
+    description: 'name',
+    required: true,
+    default: 'john',
+  })
+  @IsString()
+  @IsNotEmpty()
+  name?: string;
+
   @ApiProperty({
     description: 'country',
     required: true,

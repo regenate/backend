@@ -22,6 +22,7 @@ export interface Mentor extends Document {
   user: string | User;
   country?: string;
   language?: string;
+  name?: string;
   mentorExpertise?: ExpertiseEnum;
   experienceLevel?: ExperienceLevelEnum;
   companyOrSchool?: string;
@@ -38,6 +39,7 @@ export interface Mentee extends Document {
   user: string | User;
   country?: string;
   language?: string;
+  name?: string;
   expertise?: ExpertiseEnum;
   experienceLevel?: ExperienceLevelEnum;
   linkedlnUrl?: string;

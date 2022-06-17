@@ -65,6 +65,9 @@ export const MentorSchema = new Schema(
     language: {
       type: String,
     },
+    name: {
+      type: String,
+    },
     mentorExpertise: {
       type: Number,
     },
@@ -117,6 +120,9 @@ export const MenteeSchema = new Schema(
     },
     expertise: {
       type: Number,
+    },
+    name: {
+      type: String,
     },
 
     experienceLevel: {

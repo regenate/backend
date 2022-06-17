@@ -102,6 +102,7 @@ export class UserService {
       {
         language: updateMentorOriginDTO.language,
         country: updateMentorOriginDTO.country,
+        name: updateMentorOriginDTO.name,
       },
       {
         new: true,
@@ -237,6 +238,7 @@ export class UserService {
       {
         language: updateMenteeOriginDTO.language,
         country: updateMenteeOriginDTO.country,
+        name: updateMenteeOriginDTO.name,
       },
       {
         new: true,
