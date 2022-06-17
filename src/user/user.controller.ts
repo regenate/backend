@@ -565,4 +565,41 @@ export class MenteeController {
       this.responseService.json(res, error);
     }
   }
+
+  @ApiOperation({
+    summary: 'get list of mentors',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'list of mentors',
+  })
+  @Authorize('mentee')
+  @Get('mentors')
+  async getMentorsForMentee(
+    @Res() res: Response,
+    @Req() req: Request,
+  ): Promise<void> {
+    try {
+      let currentPage = 0;
+
+      if (
+        typeof req.params.page === 'string' &&
+        !Number.isNaN(Number(req.params.page))
+      ) {
+        currentPage = Number(req.params.page);
+      }
+      const page = Math.max(0, currentPage);
+
+      this.logger.log('retrieving list of mentors');
+      const mentorsList = await this.userService.getRandomMentors(page);
+      this.logger.success('done retrieving list of mentors');
+
+      this.responseService.json(res, 200, 'home', mentorsList);
+    } catch (error) {
+      this.logger.error(
+        `error occurred while getting list of mentors - ${error.message}`,
+      );
+      this.responseService.json(res, error);
+    }
+  }
 }

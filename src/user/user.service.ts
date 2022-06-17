@@ -332,4 +332,13 @@ export class UserService {
   async getMentee(userID: string): Promise<Mentee> {
     return this.menteeModel.findOne({ _id: userID });
   }
+
+  async getRandomMentors(page: number): Promise<Mentor[]> {
+    const contentPerPage = 20;
+    return this.mentorModel
+      .find()
+      .sort('-_id')
+      .limit(contentPerPage)
+      .skip(page * contentPerPage);
+  }
 }
