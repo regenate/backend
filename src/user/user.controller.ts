@@ -556,7 +556,6 @@ export class MenteeController {
 
       const home = {
         mentee,
-        user,
       };
 
       this.responseService.json(res, 200, 'home', home);
